@@ -2,18 +2,9 @@
   <q-page>
     <div class="row" style="margin-left: 5%; margin-right: 5%">
       <div class="col-md-4">
-        <div class="col-md-1">
-          <q-btn
-            type="submit"
-            size="md"
-            color="primary"
-            v-on:click="btnExport()"
-          >
-            <q-icon center name="fa-solid fa-magnifying-glass" />
-          </q-btn>
-        </div>
+        <ExportBtn :data="store.state.productsModule.rawData" />
       </div>
-      <SearchBar class="col-md-8" />
+      <SearchBar class="offset-md-5" />
     </div>
     <div style="margin-left: 8%; margin-right: 5%">
       <ProductSection :products="store.state.productsModule.products" />
@@ -30,14 +21,16 @@ import { useStore } from 'src/store';
 import ProductSection from '../components/ProductSection.vue';
 import SearchBar from '../components/SearchBar.vue';
 import ProductsDetail from '../components/ProductsDetail.vue';
+import ExportBtn from '../components/ExportBtn.vue';
+import ExportExcel from '../service/ExportExcel';
 
 export default defineComponent({
   name: 'ProductTracking',
-  components: { ProductSection, SearchBar, ProductsDetail },
+  components: { ProductSection, SearchBar, ProductsDetail, ExportBtn },
   setup() {
     const store = useStore();
-    const btnExport = () => ({});
-    return { store, btnExport };
+
+    return { store, ExportExcel };
   },
 });
 </script>
