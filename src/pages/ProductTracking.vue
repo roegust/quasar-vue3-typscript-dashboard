@@ -1,10 +1,7 @@
 <template>
   <q-page>
     <div class="row" style="margin-left: 5%; margin-right: 5%">
-      <div class="col-md-4">
-        <ExportBtn :data="store.state.productsModule.rawData" />
-      </div>
-      <SearchBar class="offset-md-5" />
+      <SearchBar />
     </div>
     <div style="margin-left: 8%; margin-right: 5%">
       <ProductSection :products="store.state.productsModule.products" />
@@ -21,16 +18,14 @@ import { useStore } from 'src/store';
 import ProductSection from '../components/ProductSection.vue';
 import SearchBar from '../components/SearchBar.vue';
 import ProductsDetail from '../components/ProductsDetail.vue';
-import ExportBtn from '../components/ExportBtn.vue';
-import ExportExcel from '../service/ExportExcel';
 
 export default defineComponent({
   name: 'ProductTracking',
-  components: { ProductSection, SearchBar, ProductsDetail, ExportBtn },
+  components: { ProductSection, SearchBar, ProductsDetail },
   setup() {
     const store = useStore();
 
-    return { store, ExportExcel };
+    return { store };
   },
 });
 </script>
