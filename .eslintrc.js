@@ -36,6 +36,7 @@ module.exports = {
     // 'plugin:vue/vue3-recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
 
     'airbnb-base',
+    'prettier',
   ],
 
   plugins: [
@@ -107,5 +108,6 @@ module.exports = {
         },
       },
     ],
+    // 'implicit-arrow-linebreak': 'below',
   },
 };

@@ -45,7 +45,6 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { DoughnutChart, useDoughnutChart } from 'vue-chart-3';
-// eslint-disable-next-line object-curly-newline
 import { Chart, ChartData, ChartOptions, registerables } from 'chart.js';
 import { MachineInterface } from '../store/product/state';
 
