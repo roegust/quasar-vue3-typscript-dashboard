@@ -8,7 +8,10 @@ const mutation: MutationTree<PageInfoInterface> = {
     state.from = payload.from;
     state.to = payload.to;
     state.isAfternoon = payload.isAfternoon;
-    state.isRawData = payload.isRawData;
+    // state.isRawData = payload.isRawData;
+  },
+  rawDataVisible(state: PageInfoInterface, visible: boolean) {
+    state.isRawData = visible;
   },
 };
 

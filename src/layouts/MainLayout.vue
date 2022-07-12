@@ -38,13 +38,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
+import { useStore } from 'src/store';
 
 export default defineComponent({
   name: 'MainLayout',
 
   setup() {
     const isRawData = ref(false);
+    const store = useStore();
+
+    watch(
+      () => isRawData.value,
+      (cur) => {
+        store.commit('pageInfoModule/rawDataVisible', cur);
+      },
+    );
 
     return {
       // essentialLinks: linksList,
