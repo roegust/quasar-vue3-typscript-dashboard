@@ -3,14 +3,15 @@
     <div class="col-md-1 q-pa-md">
       <ExportBtn :data="store.state.productsModule.rawData" />
     </div>
-    <div class="col-md-2 q-pa-md" />
-    <div class="col-md-4 q-pa-md">
+    <div class="col-md-1 q-pa-md" />
+    <div class="col-md-4 q-pa-sm">
       <q-select
         filled
         v-model="name"
         use-input
         input-debounce="0"
         label="Product name"
+        :stack-label="true"
         :options="options"
         @filter="filterFn"
         :rules="[(val) => (val && val.length > 0) || 'Please select a value']"
@@ -22,11 +23,24 @@
         </template>
       </q-select>
     </div>
-    <div class="col-md-3 q-pa-md">
+    <div class="col-md-2 q-pa-sm">
       <q-input
         filled
-        v-model="date"
-        mask="####-##-##"
+        :readonly="true"
+        v-model="from"
+        label="Start Time"
+        :stack-label="true"
+        :rules="[(val) => (val && val.length > 0) || 'Please select a day']"
+      />
+    </div>
+
+    <div class="col-md-2 q-pa-sm flex">
+      <q-input
+        filled
+        :readonly="true"
+        v-model="to"
+        label="End Time"
+        :stack-label="true"
         :rules="[(val) => (val && val.length > 0) || 'Please select a day']"
       >
         <template v-slot:append>
@@ -36,7 +50,12 @@
               transition-show="scale"
               transition-hide="scale"
             >
-              <q-date v-model="date" mask="YYYY-MM-DD" today-btn>
+              <q-date
+                v-model="date"
+                mask="YYYY-MM-DD"
+                range
+                @range-end="rangeComputed(date)"
+              >
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
                 </div>
@@ -46,18 +65,57 @@
         </template>
       </q-input>
     </div>
+    <!-- <div class="col-md-2 q-pa-sm">
+      <q-input
+        filled
+        v-model="date"
+        label="End Time"
+        :stack-label="true"
+        mask="####-##-## ##:##"
+        :rules="[(val) => (val && val.length > 0) || 'Please select a day']"
+      >
+        <template v-slot:append>
+          <q-icon name="event" class="cursor-pointer">
+            <q-popup-proxy
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
+              <div v-if="!toPickerCtl">
+                <q-date v-model="date" mask="YYYY-MM-DD HH:mm" today-btn fit />
+              </div>
+              <div v-else>
+                <q-time
+                  v-model="date"
+                  mask="YYYY-MM-DD HH:mm"
+                  now-btn
+                  :format24h="true"
+                />
+              </div>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+    </div> -->
 
-    <div class="col-md-1 q-pa-md">
+    <div class="col-md-1 q-pa-sm">
       <q-btn
         type="submit"
         size="md"
         color="primary"
-        v-on:click="btnConfirm({ name, date, isAfternoon })"
+        v-on:click="
+          btnConfirm({
+            name,
+            from,
+            to,
+            isAfternoon,
+          })
+        "
       >
         <q-icon center name="fa-solid fa-magnifying-glass" />
       </q-btn>
     </div>
-    <div class="col-md-1 q-pa-md">
+    <div class="col-md-1 q-pa-sm">
       <q-btn-toggle
         class=".self-center"
         v-model="isAfternoon"
@@ -82,13 +140,21 @@ import data from '../data/mockData';
 import ExportBtn from './ExportBtn.vue';
 import ExportExcel from '../service/ExportExcel';
 
+interface TimeRange {
+  from: string;
+  to: string;
+}
+
 export default defineComponent({
   name: 'SearchBar',
   components: { ExportBtn },
   setup() {
+    const today = moment().format('yyyy-MM-DD');
     const name = ref('');
-    const date = ref(moment().format('yyyy-MM-DD'));
+    const date = ref(today as TimeRange | string);
     const isAfternoon = ref(false);
+    const from = ref(today);
+    const to = ref(today);
 
     const store = useStore();
 
@@ -120,11 +186,21 @@ export default defineComponent({
 
     const btnConfirm = (payload: {
       name: string;
-      date: string;
+      from: string;
+      to: string;
       isAfternoon: boolean;
     }) => {
       if (name.value !== '' && name.value) {
-        store.dispatch('productsModule/searchData', payload);
+        store.dispatch('pageInfoModule/submit', payload);
+      }
+    };
+    const rangeComputed = (range: TimeRange | string) => {
+      if (typeof range === 'string') {
+        from.value = range;
+        to.value = range;
+      } else {
+        from.value = range.from;
+        to.value = range.to;
       }
     };
 
@@ -137,6 +213,9 @@ export default defineComponent({
       options,
       filterFn,
       ExportExcel,
+      from,
+      to,
+      rangeComputed,
     };
   },
 });
