@@ -2,11 +2,14 @@ import { ActionTree } from 'vuex';
 import moment from 'moment-timezone';
 import { StateInterface } from '../index';
 import { ProductsInterface, ProductProcessRecord } from './state';
+import { PageInfoInterface } from '../pageInfo/state';
+
 import data from '../../data/mockData';
 
 const actions: ActionTree<ProductsInterface, StateInterface> = {
-  searchData({ commit }, payload: ProductsInterface) {
+  searchData({ commit }, payload: PageInfoInterface) {
     // your code
+
     const filteredData = data.filter(
       (item) => item.name.toLowerCase() === payload.name.toLowerCase(),
     );
@@ -49,9 +52,7 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
       });
     });
 
-    payload.products = filteredData;
-    payload.rawData = destructedArr;
-    commit('setMockData', payload);
+    commit('setMockData', { products: filteredData, rawData: destructedArr });
   },
 };
 

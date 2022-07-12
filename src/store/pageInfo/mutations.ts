@@ -1,10 +1,15 @@
 import { MutationTree } from 'vuex';
-import { ExampleStateInterface } from './state';
+import { PageInfoInterface } from './state';
 
-const mutation: MutationTree<ExampleStateInterface> = {
-  someMutation (/* state: ExampleStateInterface */) {
+const mutation: MutationTree<PageInfoInterface> = {
+  storedPageInfo(state: PageInfoInterface, payload: PageInfoInterface) {
     // your code
-  }
+    state.name = payload.name;
+    state.from = payload.from;
+    state.to = payload.to;
+    state.isAfternoon = payload.isAfternoon;
+    state.isRawData = payload.isRawData;
+  },
 };
 
 export default mutation;
