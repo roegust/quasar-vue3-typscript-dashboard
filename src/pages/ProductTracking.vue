@@ -3,10 +3,16 @@
     <div class="row" style="margin-left: 5%; margin-right: 5%">
       <SearchBar />
     </div>
-    <div style="margin-left: 8%; margin-right: 5%">
+    <div
+      style="margin-left: 8%; margin-right: 5%"
+      v-show="!store.state.pageInfoModule.isRawData"
+    >
       <ProductSection :products="store.state.productsModule.products" />
     </div>
-    <div style="margin-left: 8%; margin-right: 5%">
+    <div
+      style="margin-left: 8%; margin-right: 5%"
+      v-show="store.state.pageInfoModule.isRawData"
+    >
       <ProductsDetail :rawData="store.state.productsModule.rawData" />
     </div>
   </q-page>

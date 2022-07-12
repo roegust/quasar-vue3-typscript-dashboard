@@ -36,17 +36,11 @@ export interface ProductInterface {
 }
 
 export interface ProductsInterface {
-  name: string;
-  date: string;
-  isAfternoon: boolean;
   products: ProductInterface[];
   rawData: ProductProcessRecord[];
 }
 
 const state = (): ProductsInterface => ({
-  name: '',
-  date: '',
-  isAfternoon: false,
   products: [],
   rawData: [],
 });

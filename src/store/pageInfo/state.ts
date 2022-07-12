@@ -1,6 +1,7 @@
 export interface PageInfoInterface {
   name: string;
-  date: string;
+  from: string;
+  to: string;
   isAfternoon: boolean;
   isRawData: boolean;
 }
@@ -8,7 +9,8 @@ export interface PageInfoInterface {
 function state(): PageInfoInterface {
   return {
     name: '',
-    date: '',
+    from: '',
+    to: '',
     isAfternoon: false,
     isRawData: false,
   };

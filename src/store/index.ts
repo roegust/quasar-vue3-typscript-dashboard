@@ -7,7 +7,9 @@ import {
 } from 'vuex';
 
 import productsModule from './product';
+import pageInfoModule from './pageInfo';
 import { ProductsInterface } from './product/state';
+import { PageInfoInterface } from './pageInfo/state';
 
 /*
  * If not building with SSR mode, you can
@@ -23,6 +25,7 @@ export interface StateInterface {
   // example: ExampleStateInterface;
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
   productsModule: ProductsInterface;
+  pageInfoModule: PageInfoInterface;
 }
 
 // provide typings for `this.$store`
@@ -41,6 +44,7 @@ export default store((/* { ssrContext } */) => {
     modules: {
       // example
       productsModule,
+      pageInfoModule,
     },
 
     // enable strict mode (adds overhead!)
