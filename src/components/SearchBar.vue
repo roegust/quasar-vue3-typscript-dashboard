@@ -1,7 +1,10 @@
 <template>
   <q-form style="width: 100%" class="row flex">
     <div class="col-md-1 q-pa-md">
-      <ExportBtn :data="store.state.productsModule.rawData" />
+      <ExportBtn
+        :data="store.state.productsModule.rawData"
+        v-show="store.state.productsModule.rawData.length > 0"
+      />
     </div>
     <div class="col-md-1 q-pa-md" />
     <div class="col-md-4 q-pa-sm">
