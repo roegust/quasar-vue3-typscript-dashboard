@@ -2,7 +2,7 @@
   <div
     v-for="machine in machines"
     :key="machine.name"
-    class="col-md-3 q-pa-sm q-gutter-sm justify-start flex"
+    class="col-md-4 q-pa-sm q-gutter-sm justify-start flex"
   >
     <q-card
       style="
@@ -15,17 +15,30 @@
     >
       <q-card-section>
         <div class="row">
-          <div class="col-md-6 text-h9 text-left">
-            <div class="col-sm-6 text-bold text-italic">Machine:</div>
-            <div class="col-sm-6">{{ machine.name }}</div>
-            <div class="col-sm-6 text-bold text-italic">Quantity:</div>
-            <div class="col-sm-6">
+          <div class="col-md-4" />
+          <div class="col-md-4 text-h9 text-left">
+            <div class="col-sm-6 text-bold text-italic">
+              Machine:
+
+              <!-- </div> -->
+              <!-- <div class="col-sm-6"> -->
+              {{ machine.name }}
+            </div>
+            <div class="col-sm-6 text-bold text-italic">
+              Quantity:
+              <!-- </div> -->
+              <!-- <div class="col-sm-6"> -->
               {{ machine.processRecords.length }} / {{ machine.target }}
             </div>
-            <div class="col-sm-6 text-bold text-italic">Operator:</div>
-            <div class="col-sm-6">{{ machine.user }}</div>
+            <div class="col-sm-6 text-bold text-italic">
+              Operator:
+
+              <!-- </div> -->
+              <!-- <div class="col-sm-6"> -->
+              {{ machine.user }}
+            </div>
           </div>
-          <div class="col-md-6 wrap">
+          <div class="col-md-4 wrap">
             <DoughnutChart
               v-bind="
                 makeChartConfig(machine.target, machine.processRecords.length)
@@ -71,14 +84,13 @@ export default defineComponent({
           },
         ],
       }));
-
       const options = computed<ChartOptions<'doughnut'>>(() => ({
         responsive: true,
 
         plugins: {
           title: {
             display: true,
-            text: `達成率: ${(actual / target) * 100}%`,
+            text: `達成率: ${Math.round((actual / target) * 10000) / 100}%`,
             position: 'bottom',
             font: {
               size: 20,
