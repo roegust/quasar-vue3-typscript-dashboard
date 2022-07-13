@@ -194,7 +194,9 @@ export default defineComponent({
       isAfternoon: boolean;
     }) => {
       if (name.value !== '' && name.value) {
-        store.dispatch('pageInfoModule/submit', payload);
+        store.dispatch('productsModule/refreshData', payload).then(() => {
+          store.dispatch('pageInfoModule/submit', payload);
+        });
       }
     };
     const rangeComputed = (range: TimeRange | string) => {
