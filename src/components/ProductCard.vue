@@ -15,30 +15,24 @@
     >
       <q-card-section>
         <div class="row">
-          <div class="col-md-4" />
+          <div class="col-md-4 items-center flex">
+            <q-img src="../assets/default_cnc3x2.svg" fit="cover" />
+          </div>
           <div class="col-md-4 text-h9 text-left">
-            <div class="col-sm-6 text-bold text-italic">
-              Machine:
-
-              <!-- </div> -->
-              <!-- <div class="col-sm-6"> -->
+            <div class="col-sm-6 text-bold text-italic">Machine:</div>
+            <div class="col-sm-6">
               {{ machine.name }}
             </div>
-            <div class="col-sm-6 text-bold text-italic">
-              Quantity:
-              <!-- </div> -->
-              <!-- <div class="col-sm-6"> -->
+            <div class="col-sm-6 text-bold text-italic">Quantity:</div>
+            <div class="col-sm-6">
               {{ machine.processRecords.length }} / {{ machine.target }}
             </div>
-            <div class="col-sm-6 text-bold text-italic">
-              Operator:
-
-              <!-- </div> -->
-              <!-- <div class="col-sm-6"> -->
+            <div class="col-sm-6 text-bold text-italic">Operator:</div>
+            <div class="col-sm-6">
               {{ machine.user }}
             </div>
           </div>
-          <div class="col-md-4 wrap">
+          <div class="col-md-4 items-center flex">
             <DoughnutChart
               v-bind="
                 makeChartConfig(machine.target, machine.processRecords.length)
@@ -48,7 +42,7 @@
           </div>
         </div>
         <div class="text-h5 text-center text-bold text-italic">
-          OP {{ machine.operation }}
+          {{ machine.operation }}
         </div>
       </q-card-section>
     </q-card>
