@@ -72,7 +72,11 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
       });
     });
 
-    commit('setMockData', { products: filteredData, rawData: destructedArr });
+    commit('setData', { products: filteredData, rawData: destructedArr });
+  },
+
+  refreshData({ commit }) {
+    commit('setData', { products: [], rawData: [] });
   },
 };
 

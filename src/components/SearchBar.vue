@@ -139,6 +139,7 @@
 import { defineComponent, ref } from 'vue';
 import { useStore } from 'src/store';
 import moment from 'moment';
+import { useQuasar } from 'quasar';
 import data from '../data/mockData';
 import ExportBtn from './ExportBtn.vue';
 import ExportExcel from '../service/ExportExcel';
@@ -152,6 +153,7 @@ export default defineComponent({
   name: 'SearchBar',
   components: { ExportBtn },
   setup() {
+    const q = useQuasar();
     const today = moment().format('yyyy-MM-DD');
     const name = ref('');
     const date = ref(today as TimeRange | string);
@@ -194,7 +196,17 @@ export default defineComponent({
       isAfternoon: boolean;
     }) => {
       if (name.value !== '' && name.value) {
-        store.dispatch('pageInfoModule/submit', payload);
+        q.loading.show({
+          message: 'Transforming data. Please wait...',
+          boxClass: 'bg-grey-2 text-grey-9',
+          spinnerColor: 'primary',
+        });
+        store.dispatch('productsModule/refreshData', payload).then(() => {
+          store.dispatch('pageInfoModule/submit', payload);
+          setTimeout(() => {
+            q.loading.hide();
+          }, 1000);
+        });
       }
     };
     const rangeComputed = (range: TimeRange | string) => {
