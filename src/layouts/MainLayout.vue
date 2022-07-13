@@ -74,7 +74,7 @@ export default defineComponent({
       },
     );
 
-    newDateTime();
+    // newDateTime();
 
     onBeforeMount(() => {
       newDateTime();
