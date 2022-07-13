@@ -12,6 +12,14 @@
         /> -->
 
         <q-toolbar-title> 預想車間顯示 </q-toolbar-title>
+        <div class="row">
+          <div class="col-md-12 item-center">
+            {{ date }}
+          </div>
+          <div class="col-md-6 item-right justify-end">
+            {{ time }}
+          </div>
+        </div>
 
         <div>
           <q-btn-toggle
@@ -38,8 +46,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, ref, watch, onBeforeMount } from 'vue';
 import { useStore } from 'src/store';
+import moment from 'moment';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -47,6 +56,16 @@ export default defineComponent({
   setup() {
     const isRawData = ref(false);
     const store = useStore();
+    const date = ref('');
+    const time = ref('');
+
+    const newDateTime = () => {
+      setInterval(() => {
+        const unix = moment();
+        date.value = unix.format('YYYY 年 MM 月 DD 日');
+        time.value = unix.format('hh : mm : ss ');
+      }, 1000);
+    };
 
     watch(
       () => isRawData.value,
@@ -55,9 +74,17 @@ export default defineComponent({
       },
     );
 
+    newDateTime();
+
+    onBeforeMount(() => {
+      newDateTime();
+    });
+
     return {
       // essentialLinks: linksList,
       isRawData,
+      date,
+      time,
     };
   },
 });
