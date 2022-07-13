@@ -1,5 +1,10 @@
 <template>
-  <q-btn size="md" color="primary" v-on:click="ExportExcel(data)">
+  <q-btn
+    label="Export"
+    size="md"
+    color="primary"
+    v-on:click="ExportExcel(data)"
+  >
     <q-icon center name="fa-solid fa-file-arrow-down" />
   </q-btn>
 </template>
