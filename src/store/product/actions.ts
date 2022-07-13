@@ -26,7 +26,7 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
       filteredData = res.content.products;
     });
 
-    console.log(filteredData);
+    // console.log(filteredData);
 
     const destructedArr = [] as ProductProcessRecord[];
 
