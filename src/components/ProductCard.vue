@@ -20,7 +20,7 @@
         <div class="row" style="height: 100%">
           <div class="col-md-5 items-center flex">
             <div class="text-center" style="width: 100%">
-              {{ machine.name ?? 'Unknown Machine' }}
+              {{ machine.name ?? '未知機器' }}
             </div>
             <q-img src="../assets/default_cnc3x2.svg" fit="fill" />
 
@@ -42,13 +42,13 @@
           </div>
           <div class="col-md-2 text-h9 text-right">
             <!-- <div class="col-sm-6 text-bold text-italic">Machine:</div> -->
-            <div class="col-sm-6 text-bold text-italic">Quantity:</div>
+            <div class="col-sm-6 text-bold text-italic">數量:</div>
             <div class="col-sm-6">
               {{ machine.processRecords.length }} / {{ machine.target ?? 0 }}
             </div>
-            <div class="col-sm-6 text-bold text-italic">Operator:</div>
+            <div class="col-sm-6 text-bold text-italic">操作員:</div>
             <div class="col-sm-6">
-              {{ machine.user ?? 'Unknown User' }}
+              {{ machine.user ?? '未知操作員' }}
             </div>
           </div>
         </div>
