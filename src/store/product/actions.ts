@@ -38,27 +38,39 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
         const machineName = machine.name;
         machine.processRecords.forEach((record) => {
           const tz = record.timeZone ?? 'Asia/Taipei';
+          const processSec =
+            (record.finishProcessTime - record.startProcessTime) / 1000;
+          const operationSec =
+            (record.exportTime - record.importTime) / 1000 - processSec;
+
           const destrucedRecord: ProductProcessRecord = {
-            id,
-            name: productName,
-            sn: record.sn,
-            operation,
-            operator: user,
-            machine: machineName,
-            import: moment
+            序號: record.sn,
+            操作員: user,
+            產品料號: id,
+            產品名稱: productName,
+            工序: operation,
+            設備: machineName,
+            標準工時: 0,
+            上下料時間: `${Math.trunc(operationSec / 60)} 分 ${
+              operationSec % 60
+            } 秒`,
+            單件加工時間: `${Math.trunc(processSec / 60)} 分 ${
+              processSec % 60
+            } 秒`,
+            進站時間: moment
               .unix(record.importTime / 1000)
               .tz(tz)
               .format('YYYY-MM-DD HH:mm:ss'),
-            export: moment
-              .unix(record.exportTime / 1000)
-              .tz(tz)
-              .format('YYYY-MM-DD HH:mm:ss'),
-            start: moment
+            加工開始時間: moment
               .unix(record.startProcessTime / 1000)
               .tz(tz)
               .format('YYYY-MM-DD HH:mm:ss'),
-            finished: moment
+            加工結束時間: moment
               .unix(record.finishProcessTime / 1000)
+              .tz(tz)
+              .format('YYYY-MM-DD HH:mm:ss'),
+            出站時間: moment
+              .unix(record.exportTime / 1000)
               .tz(tz)
               .format('YYYY-MM-DD HH:mm:ss'),
           };
