@@ -105,7 +105,7 @@
       <q-btn
         type="submit"
         size="md"
-        color="primary"
+        color="teal-9"
         v-on:click="
           btnConfirm({
             name,
@@ -115,17 +115,19 @@
           })
         "
       >
-        <q-icon center name="fa-solid fa-magnifying-glass" />
+        <q-icon center name="fa-solid fa-magnifying-glass" color="#bfbfbf" />
       </q-btn>
     </div>
+
+    <!-- //TODO setMockData2Render -->
     <div class="col-md-1 q-pa-sm">
       <q-btn-toggle
         class=".self-center"
         v-model="isAfternoon"
         size="sm"
-        toggle-color="primary"
-        color="white"
-        text-color="primary"
+        style="background-color: #637371"
+        text-color="white"
+        toggle-color="teal-9"
         :options="[
           { label: '早班', value: false },
           { label: '中班', value: true },
@@ -209,6 +211,7 @@ export default defineComponent({
         });
       }
     };
+
     const rangeComputed = (range: TimeRange | string) => {
       if (typeof range === 'string') {
         from.value = range;

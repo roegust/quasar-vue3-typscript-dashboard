@@ -8,31 +8,31 @@
       style="
         width: 100%;
         border-width: 3px;
-        border-style: solid;
-        border-color: #01a7fd;
-        padding: 5px;
+        border-style: dashed;
+        border-color: #637371;
+        background-color: #8aa6a3;
+        padding-right: 5%;
+        /* padding: 5px; */
       "
     >
+      <!-- //TODO refactor layout -->
       <q-card-section>
-        <div class="row">
-          <div class="col-md-4 items-center flex">
-            <q-img src="../assets/default_cnc3x2.svg" fit="cover" />
-          </div>
-          <div class="col-md-4 text-h9 text-left">
-            <div class="col-sm-6 text-bold text-italic">Machine:</div>
-            <div class="col-sm-6">
-              {{ machine.name }}
+        <div class="row" style="height: 100%">
+          <div class="col-md-5 items-center flex">
+            <div class="text-center" style="width: 100%">
+              {{ machine.name ?? 'Unknown Machine' }}
             </div>
-            <div class="col-sm-6 text-bold text-italic">Quantity:</div>
-            <div class="col-sm-6">
-              {{ machine.processRecords.length }} / {{ machine.target }}
-            </div>
-            <div class="col-sm-6 text-bold text-italic">Operator:</div>
-            <div class="col-sm-6">
-              {{ machine.user }}
+            <q-img src="../assets/default_cnc3x2.svg" fit="fill" />
+
+            <div
+              class="text-h5 text-center text-bold text-italic"
+              style="width: 100%"
+            >
+              {{ machine.operation }}
             </div>
           </div>
-          <div class="col-md-4 items-center flex">
+
+          <div class="col-md-5 items-center flex">
             <DoughnutChart
               v-bind="
                 makeChartConfig(machine.target, machine.processRecords.length)
@@ -40,9 +40,17 @@
               "
             />
           </div>
-        </div>
-        <div class="text-h5 text-center text-bold text-italic">
-          {{ machine.operation }}
+          <div class="col-md-2 text-h9 text-right">
+            <!-- <div class="col-sm-6 text-bold text-italic">Machine:</div> -->
+            <div class="col-sm-6 text-bold text-italic">Quantity:</div>
+            <div class="col-sm-6">
+              {{ machine.processRecords.length }} / {{ machine.target ?? 0 }}
+            </div>
+            <div class="col-sm-6 text-bold text-italic">Operator:</div>
+            <div class="col-sm-6">
+              {{ machine.user ?? 'Unknown User' }}
+            </div>
+          </div>
         </div>
       </q-card-section>
     </q-card>
@@ -67,24 +75,30 @@ export default defineComponent({
     // const testArr1 = [...Array(Math.floor(Math.random() * 9) + 1).keys()];
 
     const makeChartConfig = (target: number, actual: number) => {
-      const chartColor = actual / target < 0.8 ? '#FF0000' : '#9ACD32';
+      const chartColor = actual / target < 0.8 ? '#f06292' : '#81c784';
 
       const chartData = computed<ChartData<'doughnut'>>(() => ({
         // labels: ['Success'],
         datasets: [
           {
-            data: [actual, target - actual],
-            backgroundColor: [chartColor, '#f0f7ff'],
+            data: [actual, target ?? actual - actual],
+            backgroundColor: [chartColor, '#BFBFBF'],
           },
         ],
       }));
+
+      const successRate =
+        Math.round((actual / target) * 10000) === Infinity
+          ? 10000
+          : Math.round((actual / target) * 10000);
       const options = computed<ChartOptions<'doughnut'>>(() => ({
         responsive: true,
 
         plugins: {
           title: {
             display: true,
-            text: `達成率: ${Math.round((actual / target) * 10000) / 100}%`,
+            text: `達成率: ${successRate / 100}%`,
+            color: '#10403B',
             position: 'bottom',
             font: {
               size: 20,
