@@ -6,13 +6,14 @@
     :key="product.name + product.carft"
   >
     <div class="row q-pa-md">
-      <q-card style="background: #01a7fd" class="text-white text-bold">
+      <q-card style="background: #00695c" class="text-white text-bold">
         <q-card-section>
-          {{ product.name }} ({{ product.carft }})
+          {{ product.name ?? 'Unknown Product' }}
+          {{ product.carft ? `(${product.carft})` : '' }}
         </q-card-section>
       </q-card>
     </div>
-    <div class="row" style="background: #30ffff">
+    <div class="row">
       <ProductCard :machines="product.machines" />
     </div>
   </div>
