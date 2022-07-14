@@ -15,7 +15,7 @@
         input-debounce="0"
         label="Product name"
         :stack-label="true"
-        :options="options"
+        :options="store.state.pageInfoModule.products"
         @filter="filterFn"
         :rules="[(val) => (val && val.length > 0) || 'Please select a value']"
       >
@@ -111,7 +111,7 @@
             name,
             from,
             to,
-            isAfternoon,
+            shiftSelected,
           })
         "
       >
@@ -123,22 +123,19 @@
     <div class="col-md-1 q-pa-sm">
       <q-btn-toggle
         class=".self-center"
-        v-model="isAfternoon"
+        v-model="shiftSelected"
         size="sm"
         style="background-color: #637371"
         text-color="white"
         toggle-color="teal-9"
-        :options="[
-          { label: '早班', value: false },
-          { label: '中班', value: true },
-        ]"
+        :options="store.state.pageInfoModule.shifts"
       />
     </div>
   </q-form>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onBeforeMount, watch } from 'vue';
 import { useStore } from 'src/store';
 import moment from 'moment';
 import { useQuasar } from 'quasar';
@@ -159,7 +156,7 @@ export default defineComponent({
     const today = moment().format('yyyy-MM-DD');
     const name = ref('');
     const date = ref(today as TimeRange | string);
-    const isAfternoon = ref(false);
+    const shiftSelected = ref({} as TimeRange);
     const from = ref(today);
     const to = ref(today);
 
@@ -191,11 +188,27 @@ export default defineComponent({
       });
     };
 
+    onBeforeMount(() => {
+      store.dispatch('pageInfoModule/collect');
+    });
+
+    watch(
+      () => store.state.pageInfoModule.shifts,
+      () => {
+        const { shifts } = store.state.pageInfoModule;
+
+        if (shifts.length > 0) {
+          const shift = shifts[0];
+          shiftSelected.value = shift.value;
+        }
+      },
+    );
+
     const btnConfirm = (payload: {
       name: string;
       from: string;
       to: string;
-      isAfternoon: boolean;
+      shiftSelected: TimeRange;
     }) => {
       if (name.value !== '' && name.value) {
         q.loading.show({
@@ -203,6 +216,8 @@ export default defineComponent({
           boxClass: 'bg-grey-2 text-grey-9',
           spinnerColor: 'primary',
         });
+        payload.from = `${payload.from} ${payload.shiftSelected.from}`;
+        payload.to = `${payload.to} ${payload.shiftSelected.to}`;
         store.dispatch('productsModule/refreshData', payload).then(() => {
           store.dispatch('pageInfoModule/submit', payload);
           setTimeout(() => {
@@ -226,7 +241,7 @@ export default defineComponent({
       store,
       name,
       date,
-      isAfternoon,
+      shiftSelected,
       btnConfirm,
       options,
       filterFn,
