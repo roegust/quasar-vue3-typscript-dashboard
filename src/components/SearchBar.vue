@@ -7,13 +7,13 @@
       />
     </div>
     <div class="col-md-1 q-pa-md" />
-    <div class="col-md-4 q-pa-sm">
+    <div class="col-md-4 q-pa-md">
       <q-select
         filled
         v-model="name"
         use-input
         input-debounce="0"
-        label="Product name"
+        label="產品名稱"
         :stack-label="true"
         :options="store.state.pageInfoModule.products"
         @filter="filterFn"
@@ -21,28 +21,28 @@
       >
         <template v-slot:no-option>
           <q-item>
-            <q-item-section class="text-grey"> No results </q-item-section>
+            <q-item-section class="text-grey"> 找不到結果 </q-item-section>
           </q-item>
         </template>
       </q-select>
     </div>
-    <div class="col-md-2 q-pa-sm">
+    <div class="col-md-2 q-pa-md">
       <q-input
         filled
         :readonly="true"
         v-model="from"
-        label="Start Time"
+        label="開始時間"
         :stack-label="true"
         :rules="[(val) => (val && val.length > 0) || 'Please select a day']"
       />
     </div>
 
-    <div class="col-md-2 q-pa-sm flex">
+    <div class="col-md-2 q-pa-md">
       <q-input
         filled
         :readonly="true"
         v-model="to"
-        label="End Time"
+        label="結束時間"
         :stack-label="true"
         :rules="[(val) => (val && val.length > 0) || 'Please select a day']"
       >
@@ -68,40 +68,8 @@
         </template>
       </q-input>
     </div>
-    <!-- <div class="col-md-2 q-pa-sm">
-      <q-input
-        filled
-        v-model="date"
-        label="End Time"
-        :stack-label="true"
-        mask="####-##-## ##:##"
-        :rules="[(val) => (val && val.length > 0) || 'Please select a day']"
-      >
-        <template v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy
-              cover
-              transition-show="scale"
-              transition-hide="scale"
-            >
-              <div v-if="!toPickerCtl">
-                <q-date v-model="date" mask="YYYY-MM-DD HH:mm" today-btn fit />
-              </div>
-              <div v-else>
-                <q-time
-                  v-model="date"
-                  mask="YYYY-MM-DD HH:mm"
-                  now-btn
-                  :format24h="true"
-                />
-              </div>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-    </div> -->
 
-    <div class="col-md-1 q-pa-sm">
+    <div class="col-md-1 q-pa-md">
       <q-btn
         type="submit"
         size="md"
@@ -119,8 +87,7 @@
       </q-btn>
     </div>
 
-    <!-- //TODO setMockData2Render -->
-    <div class="col-md-1 q-pa-sm">
+    <div class="col-md-1 q-pa-md">
       <q-btn-toggle
         class=".self-center"
         v-model="shiftSelected"
