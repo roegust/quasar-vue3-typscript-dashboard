@@ -2,9 +2,8 @@
   <q-table
     :rows="rawData"
     row-key="sn"
-    dark
     :rows-per-page-options="pages"
-    style="background-color: #127369"
+    style="background-color: #bfbfbf"
   />
 </template>
 
