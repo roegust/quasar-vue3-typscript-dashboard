@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar class="bg-blue-5">
+      <q-toolbar style="background-color: #127369">
         <!-- <q-btn
           flat
           dense
@@ -11,12 +11,12 @@
           @click="toggleLeftDrawer"
         /> -->
 
-        <q-toolbar-title> 預想車間顯示 </q-toolbar-title>
+        <q-toolbar-title> 勤美化新 </q-toolbar-title>
         <div class="row">
-          <div class="col-md-12 item-center">
+          <div class="col-md-12 offset-1">
             {{ date }}
           </div>
-          <div class="col-md-6 item-right justify-end">
+          <div class="col-md-12 offset-4">
             {{ time }}
           </div>
         </div>
@@ -25,9 +25,8 @@
           <q-btn-toggle
             v-model="isRawData"
             size="md"
-            toggle-color="primary"
-            color="white"
-            text-color="primary"
+            style="background-color: #637371"
+            toggle-color="teal-9"
             :options="[
               { label: '圖表', value: false },
               { label: '表單', value: true },
@@ -37,7 +36,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
+    <q-page-container style="background-color: #bfbfbf">
       <router-view />
     </q-page-container>
 
@@ -63,7 +62,7 @@ export default defineComponent({
       setInterval(() => {
         const unix = moment();
         date.value = unix.format('YYYY 年 MM 月 DD 日');
-        time.value = unix.format('hh : mm : ss ');
+        time.value = unix.format('HH : mm : ss ');
       }, 1000);
     };
 
