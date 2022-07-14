@@ -22,7 +22,7 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
 
     let filteredData = [] as ProductInterface[];
 
-    await Products(payload).then((res) => {
+    await Products.records(payload).then((res) => {
       filteredData = res.content.products;
     });
 
@@ -45,24 +45,20 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
             operation,
             operator: user,
             machine: machineName,
-            // import: '',
-            // export: '',
-            // start: '',
-            // finished: '',
             import: moment
-              .unix(record.importTime)
+              .unix(record.importTime / 1000)
               .tz(tz)
               .format('YYYY-MM-DD HH:mm:ss'),
             export: moment
-              .unix(record.exportTime)
+              .unix(record.exportTime / 1000)
               .tz(tz)
               .format('YYYY-MM-DD HH:mm:ss'),
             start: moment
-              .unix(record.startProcessTime)
+              .unix(record.startProcessTime / 1000)
               .tz(tz)
               .format('YYYY-MM-DD HH:mm:ss'),
             finished: moment
-              .unix(record.finishProcessTime)
+              .unix(record.finishProcessTime / 1000)
               .tz(tz)
               .format('YYYY-MM-DD HH:mm:ss'),
           };
