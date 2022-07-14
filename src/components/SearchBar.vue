@@ -1,5 +1,19 @@
 <template>
-  <q-form style="width: 100%" class="row flex">
+  <q-form
+    style="width: 100%"
+    class="row flex"
+    @submit="
+      btnConfirm({
+        name,
+        from,
+        to,
+        shiftSelected: {
+          from: shiftSelected.from,
+          to: shiftSelected.to,
+        },
+      })
+    "
+  >
     <div class="col-md-1 q-pa-md">
       <ExportBtn
         :data="store.state.productsModule.rawData"
@@ -70,19 +84,7 @@
     </div>
 
     <div class="col-md-1 q-pa-md">
-      <q-btn
-        type="submit"
-        size="md"
-        color="teal-9"
-        v-on:click="
-          btnConfirm({
-            name,
-            from,
-            to,
-            shiftSelected,
-          })
-        "
-      >
+      <q-btn type="submit" size="md" color="teal-9">
         <q-icon center name="fa-solid fa-magnifying-glass" color="#bfbfbf" />
       </q-btn>
     </div>
@@ -105,7 +107,7 @@
 import { defineComponent, ref, onBeforeMount, watch } from 'vue';
 import { useStore } from 'src/store';
 import moment from 'moment';
-import { useQuasar } from 'quasar';
+// import { useQuasar } from 'quasar';
 import data from '../data/mockData';
 import ExportBtn from './ExportBtn.vue';
 import ExportExcel from '../service/ExportExcel';
@@ -119,7 +121,7 @@ export default defineComponent({
   name: 'SearchBar',
   components: { ExportBtn },
   setup() {
-    const q = useQuasar();
+    // const q = useQuasar();
     const today = moment().format('yyyy-MM-DD');
     const name = ref('');
     const date = ref(today as TimeRange | string);
@@ -178,18 +180,16 @@ export default defineComponent({
       shiftSelected: TimeRange;
     }) => {
       if (name.value !== '' && name.value) {
-        q.loading.show({
-          message: 'Transforming data. Please wait...',
-          boxClass: 'bg-grey-2 text-grey-9',
-          spinnerColor: 'primary',
-        });
-        payload.from = `${payload.from} ${payload.shiftSelected.from}`;
-        payload.to = `${payload.to} ${payload.shiftSelected.to}`;
+        // q.loading.show({
+        //   message: 'Transforming data. Please wait...',
+        //   boxClass: 'bg-grey-2 text-grey-9',
+        //   spinnerColor: 'primary',
+        // });
         store.dispatch('productsModule/refreshData', payload).then(() => {
           store.dispatch('pageInfoModule/submit', payload);
-          setTimeout(() => {
-            q.loading.hide();
-          }, 1000);
+          // setTimeout(() => {
+          //   q.loading.hide();
+          // }, 1000);
         });
       }
     };
