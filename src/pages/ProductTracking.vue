@@ -3,10 +3,10 @@
     <div class="row">
       <SearchBar />
     </div>
-    <div v-show="!store.state.pageInfoModule.isRawData">
+    <div v-if="!store.state.pageInfoModule.isRawData">
       <ProductSection :products="store.state.productsModule.products" />
     </div>
-    <div v-show="store.state.pageInfoModule.isRawData">
+    <div v-if="store.state.pageInfoModule.isRawData">
       <ProductsDetail :rawData="store.state.productsModule.rawData" />
     </div>
   </q-page>
