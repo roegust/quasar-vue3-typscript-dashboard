@@ -18,6 +18,10 @@ export interface PageInfoInterface {
   from: string;
   to: string;
   isRawData: boolean;
+  shiftSelected: {
+    from: string;
+    to: string;
+  };
   products: string[];
   shifts: ShiftsInterface[];
 }
@@ -28,6 +32,10 @@ function state(): PageInfoInterface {
     from: '',
     to: '',
     isRawData: false,
+    shiftSelected: {
+      from: '',
+      to: '',
+    },
     products: [],
     shifts: [],
   };

@@ -5,7 +5,7 @@ export interface ProductProcessRecord {
   產品名稱: string;
   工序: string;
   設備: string;
-  標準工時: number;
+  標準工時: string;
   上下料時間: string;
   單件加工時間: string;
   進站時間: string;
@@ -28,6 +28,7 @@ export interface MachineInterface {
   name: string;
   target: number;
   user: string;
+  estimatedProcessingTime: number;
   processRecords: ProcessRecordInterface[];
 }
 

@@ -21,7 +21,7 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
     // );
 
     let filteredData = [] as ProductInterface[];
-
+    // console.log(payload);
     await Products.records(payload).then((res) => {
       filteredData = res.content.products;
     });
@@ -34,7 +34,7 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
       const { id } = product;
       const productName = product.name;
       product.machines.forEach((machine) => {
-        const { operation, user } = machine;
+        const { operation, user, estimatedProcessingTime } = machine;
         const machineName = machine.name;
         machine.processRecords.forEach((record) => {
           const tz = record.timeZone ?? 'Asia/Taipei';
@@ -50,7 +50,9 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
             產品名稱: productName,
             工序: operation,
             設備: machineName,
-            標準工時: 0,
+            標準工時: `${Math.trunc(estimatedProcessingTime / 1000 / 60)} 分 ${
+              (estimatedProcessingTime / 100) % 60
+            } 秒`,
             上下料時間: `${Math.trunc(operationSec / 60)} 分 ${
               operationSec % 60
             } 秒`,
