@@ -1,14 +1,17 @@
 export interface ProductProcessRecord {
-  id: string;
-  name: string;
-  sn: string;
-  operation: string;
-  operator: string;
-  machine: string;
-  import: string;
-  export: string;
-  start: string;
-  finished: string;
+  序號: string;
+  產品料號: string;
+  操作員: string;
+  產品名稱: string;
+  工序: string;
+  設備: string;
+  標準工時: number;
+  上下料時間: string;
+  單件加工時間: string;
+  進站時間: string;
+  加工開始時間: string;
+  加工結束時間: string;
+  出站時間: string;
 }
 
 export interface ProcessRecordInterface {
