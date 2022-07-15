@@ -36,12 +36,18 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
       product.machines.forEach((machine) => {
         const { operation, user, estimatedProcessingTime } = machine;
         const machineName = machine.name;
+        let count = 0;
+        let sum = 0;
+
         machine.processRecords.forEach((record) => {
           const tz = record.timeZone ?? 'Asia/Taipei';
           const processSec =
             (record.finishProcessTime - record.startProcessTime) / 1000;
           const operationSec =
             (record.exportTime - record.importTime) / 1000 - processSec;
+
+          count += 1;
+          sum += operationSec + processSec;
 
           const destrucedRecord: ProductProcessRecord = {
             序號: record.sn,
@@ -50,15 +56,15 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
             產品名稱: productName,
             工序: operation,
             設備: machineName,
-            標準工時: `${Math.trunc(estimatedProcessingTime / 1000 / 60)} 分 ${
-              (estimatedProcessingTime / 100) % 60
-            } 秒`,
-            上下料時間: `${Math.trunc(operationSec / 60)} 分 ${
-              operationSec % 60
-            } 秒`,
-            單件加工時間: `${Math.trunc(processSec / 60)} 分 ${
-              processSec % 60
-            } 秒`,
+            標準工時: `${Math.trunc(
+              estimatedProcessingTime / 1000 / 60,
+            )} 分 ${Math.trunc((estimatedProcessingTime / 100) % 60)} 秒`,
+            上下料時間: `${Math.trunc(operationSec / 60)} 分 ${Math.trunc(
+              operationSec % 60,
+            )} 秒`,
+            單件加工時間: `${Math.trunc(processSec / 60)} 分 ${Math.trunc(
+              processSec % 60,
+            )} 秒`,
             進站時間: moment
               .unix(record.importTime / 1000)
               .tz(tz)
@@ -76,6 +82,8 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
               .tz(tz)
               .format('YYYY-MM-DD HH:mm:ss'),
           };
+
+          machine.avgProcessingTime = sum / count;
 
           destructedArr.push(destrucedRecord);
         });
