@@ -71,6 +71,8 @@
                 v-model="date"
                 mask="YYYY-MM-DD"
                 range
+                dark
+                color="teal-9"
                 @range-end="rangeComputed(date)"
               >
                 <div class="row items-center justify-end">
@@ -91,9 +93,8 @@
 
     <div class="col-md-1 q-pa-md">
       <q-btn-toggle
-        class=".self-center"
         v-model="shiftSelected"
-        size="sm"
+        size="md"
         style="background-color: #637371"
         text-color="white"
         toggle-color="teal-9"
@@ -115,7 +116,7 @@
 import { defineComponent, ref, onBeforeMount, watch } from 'vue';
 import { useStore } from 'src/store';
 import moment from 'moment';
-// import { useQuasar } from 'quasar';
+import { useQuasar } from 'quasar';
 import data from '../data/mockData';
 import ExportBtn from './ExportBtn.vue';
 import ExportExcel from '../service/ExportExcel';
@@ -129,7 +130,7 @@ export default defineComponent({
   name: 'SearchBar',
   components: { ExportBtn },
   setup() {
-    // const q = useQuasar();
+    const q = useQuasar();
     const today = moment().format('yyyy-MM-DD');
     const name = ref('');
     const date = ref(today as TimeRange | string);
@@ -188,16 +189,16 @@ export default defineComponent({
       shiftSelected: TimeRange;
     }) => {
       if (name.value !== '' && name.value) {
-        // q.loading.show({
-        //   message: 'Transforming data. Please wait...',
-        //   boxClass: 'bg-grey-2 text-grey-9',
-        //   spinnerColor: 'primary',
-        // });
+        q.loading.show({
+          message: 'Transforming data. Please wait...',
+          boxClass: 'bg-grey-2 text-grey-9',
+          spinnerColor: 'primary',
+        });
         store.dispatch('productsModule/refreshData', payload).then(() => {
           store.dispatch('pageInfoModule/submit', payload);
-          // setTimeout(() => {
-          //   q.loading.hide();
-          // }, 1000);
+          setTimeout(() => {
+            q.loading.hide();
+          }, 1000);
         });
       }
     };
