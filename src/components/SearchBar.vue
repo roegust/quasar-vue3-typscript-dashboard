@@ -98,7 +98,15 @@
         text-color="white"
         toggle-color="teal-9"
         :options="store.state.pageInfoModule.shifts"
-      />
+      >
+        <template
+          v-for="shift in store.state.pageInfoModule.shifts"
+          :key="shift.label"
+          v-slot:[shift.slot]
+        >
+          <q-tooltip>{{ `${shift.value.from} - ${shift.value.to}` }}</q-tooltip>
+        </template>
+      </q-btn-toggle>
     </div>
   </q-form>
 </template>

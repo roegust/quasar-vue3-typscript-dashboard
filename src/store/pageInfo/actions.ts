@@ -12,6 +12,7 @@ const actions: ActionTree<PageInfoInterface, StateInterface> = {
       .map((item) => ({
         label: item.name,
         value: { from: item.from, to: item.to },
+        slot: item.id.toString(),
       }));
     commit('setPageOptions', { products, shifts: newShifts });
   },

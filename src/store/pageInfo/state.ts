@@ -11,6 +11,7 @@ export interface ShiftsInterface {
     from: string;
     to: string;
   };
+  slot: string;
 }
 
 export interface PageInfoInterface {
