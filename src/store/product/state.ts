@@ -29,6 +29,7 @@ export interface MachineInterface {
   target: number;
   user: string;
   estimatedProcessingTime: number;
+  avgProcessingTime: number;
   processRecords: ProcessRecordInterface[];
 }
 

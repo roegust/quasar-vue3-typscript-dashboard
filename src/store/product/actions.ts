@@ -36,12 +36,18 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
       product.machines.forEach((machine) => {
         const { operation, user, estimatedProcessingTime } = machine;
         const machineName = machine.name;
+        let count = 0;
+        let sum = 0;
+
         machine.processRecords.forEach((record) => {
           const tz = record.timeZone ?? 'Asia/Taipei';
           const processSec =
             (record.finishProcessTime - record.startProcessTime) / 1000;
           const operationSec =
             (record.exportTime - record.importTime) / 1000 - processSec;
+
+          count += 1;
+          sum += operationSec + processSec;
 
           const destrucedRecord: ProductProcessRecord = {
             序號: record.sn,
@@ -76,6 +82,8 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
               .tz(tz)
               .format('YYYY-MM-DD HH:mm:ss'),
           };
+
+          machine.avgProcessingTime = sum / count;
 
           destructedArr.push(destrucedRecord);
         });
