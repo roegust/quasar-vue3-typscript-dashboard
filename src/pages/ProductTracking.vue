@@ -1,12 +1,15 @@
 <template>
-  <q-page style="margin-left: 5%; margin-right: 5%">
-    <div class="row">
+  <q-page>
+    <div class="row" style="margin-left: 5%; margin-right: 5%">
       <SearchBar />
     </div>
     <div v-if="!store.state.pageInfoModule.isRawData">
       <ProductSection :products="store.state.productsModule.products" />
     </div>
-    <div v-if="store.state.pageInfoModule.isRawData">
+    <div
+      v-if="store.state.pageInfoModule.isRawData"
+      style="margin-left: 3%; margin-right: 3%"
+    >
       <ProductsDetail :rawData="store.state.productsModule.rawData" />
     </div>
   </q-page>
