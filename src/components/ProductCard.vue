@@ -2,7 +2,7 @@
   <div
     v-for="machine in machines"
     :key="machine.name"
-    class="col-md-4 q-pa-sm q-gutter-sm justify-start flex"
+    class="col-md-3 q-pa-sm q-gutter-sm justify-start flex"
   >
     <q-card
       style="
@@ -12,14 +12,16 @@
         border-color: #637371;
         background-color: #8aa6a3;
         padding-right: 5%;
+
+        align-items: flex-end;
         /* padding: 5px; */
       "
     >
       <!-- //TODO refactor layout -->
       <q-card-section>
         <div class="row" style="height: 100%">
-          <div class="col-md-5 items-center flex">
-            <div class="text-center" style="width: 100%">
+          <div class="col-md-6 items-center flex">
+            <div class="text-center text-h6" style="width: 100%">
               {{ machine.name ?? '未知機器' }}
             </div>
             <q-img src="../assets/default_cnc3x2.svg" fit="fill" />
@@ -31,26 +33,62 @@
               {{ machine.operation }}
             </div>
           </div>
-
-          <div class="col-md-5 items-center flex">
-            <DoughnutChart
-              v-bind="
-                makeChartConfig(machine.target, machine.processRecords.length)
-                  .value
-              "
-            />
-          </div>
-          <div class="col-md-2 text-h9 text-right">
-            <!-- <div class="col-sm-6 text-bold text-italic">Machine:</div> -->
-            <div class="col-sm-6 text-bold text-italic">數量:</div>
-            <div class="col-sm-6">
-              {{ machine.processRecords.length }} / {{ machine.target ?? 0 }}
+          <div class="col-md-6">
+            <div class="col-md-6">
+              <DoughnutChart
+                v-bind="
+                  makeChartConfig(machine.target, machine.processRecords.length)
+                    .value
+                "
+              />
             </div>
-            <div class="col-sm-6 text-bold text-italic">操作員:</div>
-            <div class="col-sm-6">
-              {{ machine.user ?? '未知操作員' }}
+            <div class="col-md-4 text-h9 text-center">
+              <div class="row flex-end">
+                <div class="col-sm-6">
+                  <div class="col-sm-6 text-bold text-italic">數量:</div>
+                  <div class="col-sm-6">
+                    {{ machine.processRecords.length }} /
+                    {{ machine.target ?? 0 }}
+                  </div>
+                  <div class="col-sm-6 text-bold text-italic">操作員:</div>
+                  <div class="col-sm-6">
+                    {{ machine.user ?? '未知操作員' }}
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="col-sm-6 text-bold text-italic">標準工時:</div>
+                  <div class="col-sm-6">
+                    {{
+                      `${machine.estimatedProcessingTime / 1000 / 60} 分 ${
+                        (machine.estimatedProcessingTime / 1000) % 60
+                      } 秒`
+                    }}
+                  </div>
+                  <div class="col-sm-6 text-bold text-italic">平均工時:</div>
+                  <div class="col-sm-6">
+                    {{
+                      `${machine.avgProcessingTime / 60} 分 ${
+                        machine.avgProcessingTime % 60
+                      } 秒`
+                    }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          <!-- <div class="col-sm-6 text-h5 text-bold text-center">
+            {{
+              `達成率: ${
+                (Math.round(
+                  (machine.processRecords.length / machine.target) * 10000,
+                ) === Infinity
+                  ? 10000
+                  : Math.round(
+                      (machine.processRecords.length / machine.target) * 10000,
+                    )) / 100
+              }%`
+            }}
+          </div> -->
         </div>
       </q-card-section>
     </q-card>
@@ -81,7 +119,7 @@ export default defineComponent({
         // labels: ['Success'],
         datasets: [
           {
-            data: [actual, target ?? actual - actual],
+            data: [actual, (target ?? actual) - actual],
             backgroundColor: [chartColor, '#BFBFBF'],
           },
         ],
@@ -93,13 +131,17 @@ export default defineComponent({
           : Math.round((actual / target) * 10000);
       const options = computed<ChartOptions<'doughnut'>>(() => ({
         responsive: true,
-
+        layout: {
+          padding: {
+            top: 10,
+          },
+        },
         plugins: {
           title: {
             display: true,
             text: `達成率: ${successRate / 100}%`,
             color: '#10403B',
-            position: 'bottom',
+            position: 'top',
             font: {
               size: 20,
             },
@@ -107,6 +149,8 @@ export default defineComponent({
           legend: {
             position: 'bottom',
           },
+
+          // clip: { left: 0, top: 0, right: -2, bottom: false },
         },
         animation: {
           animateScale: true,
