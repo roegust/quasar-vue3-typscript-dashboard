@@ -1,5 +1,5 @@
 <template>
-  <q-btn label="匯出" size="sm" color="teal-9" v-on:click="ExportExcel(data)">
+  <q-btn label="匯出" size="md" color="teal-9" v-on:click="ExportExcel(data)">
     <q-icon center name="fa-solid fa-file-arrow-down" />
   </q-btn>
 </template>
