@@ -14,6 +14,7 @@ const actions: ActionTree<PageInfoInterface, StateInterface> = {
         value: { from: item.from, to: item.to },
         slot: item.id.toString(),
       }));
+    products.sort();
     commit('setPageOptions', { products, shifts: newShifts });
   },
   submit({ commit }, payload: PageInfoInterface) {
