@@ -59,17 +59,19 @@
                   <div class="col-sm-6 text-bold text-italic">標準工時:</div>
                   <div class="col-sm-6">
                     {{
-                      `${machine.estimatedProcessingTime / 1000 / 60} 分 ${
-                        (machine.estimatedProcessingTime / 1000) % 60
-                      } 秒`
+                      `${Math.trunc(
+                        machine.estimatedProcessingTime / 1000 / 60,
+                      )} 分 ${Math.trunc(
+                        (machine.estimatedProcessingTime / 1000) % 60,
+                      )} 秒`
                     }}
                   </div>
                   <div class="col-sm-6 text-bold text-italic">平均工時:</div>
                   <div class="col-sm-6">
                     {{
-                      `${machine.avgProcessingTime / 60} 分 ${
-                        machine.avgProcessingTime % 60
-                      } 秒`
+                      `${Math.trunc(
+                        machine.avgProcessingTime / 60,
+                      )} 分 ${Math.trunc(machine.avgProcessingTime % 60)} 秒`
                     }}
                   </div>
                 </div>
@@ -114,12 +116,12 @@ export default defineComponent({
 
     const makeChartConfig = (target: number, actual: number) => {
       const chartColor = actual / target < 0.8 ? '#f06292' : '#81c784';
-
+      const remain = (target ?? actual) - actual;
       const chartData = computed<ChartData<'doughnut'>>(() => ({
         // labels: ['Success'],
         datasets: [
           {
-            data: [actual, (target ?? actual) - actual],
+            data: [actual, remain < 0 ? 0 : remain],
             backgroundColor: [chartColor, '#BFBFBF'],
           },
         ],
