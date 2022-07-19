@@ -29,7 +29,7 @@
         input-debounce="0"
         label="產品名稱"
         :stack-label="true"
-        :options="store.state.pageInfoModule.products"
+        :options="options"
         @filter="filterFn"
         :rules="[(val) => (val && val.length > 0) || 'Please select a value']"
       >
@@ -117,7 +117,7 @@ import { defineComponent, ref, onBeforeMount, watch } from 'vue';
 import { useStore } from 'src/store';
 import moment from 'moment';
 import { useQuasar } from 'quasar';
-import data from '../data/mockData';
+// import data from '../data/mockData';
 import ExportBtn from './ExportBtn.vue';
 import ExportExcel from '../service/ExportExcel';
 
@@ -140,11 +140,11 @@ export default defineComponent({
 
     const store = useStore();
 
-    const productNames = [
-      ...new Set(data.map((product) => product.name).sort()),
-    ];
+    // const productNames = [
+    //   ...new Set(data.map((product) => product.name).sort()),
+    // ];
 
-    const options = ref(productNames);
+    const options = ref([] as string[]);
 
     const filterFn = (
       val: string,
@@ -152,7 +152,9 @@ export default defineComponent({
     ) => {
       if (val === '') {
         update(() => {
-          options.value = productNames;
+          options.value = store.state.pageInfoModule.products.filter(
+            (item) => item,
+          );
         });
 
         return;
@@ -160,8 +162,8 @@ export default defineComponent({
 
       update(() => {
         const needle = val.toLowerCase();
-        options.value = productNames.filter(
-          (v) => v.toLowerCase().indexOf(needle.toLowerCase()) > -1,
+        options.value = store.state.pageInfoModule.products.filter(
+          (v) => v.toLowerCase().indexOf(needle) > -1,
         );
       });
     };
