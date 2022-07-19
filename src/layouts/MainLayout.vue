@@ -13,7 +13,7 @@
         <!-- <div class="row">
             <q-img src="../assets/logo.svg" fit="fill" />
         </div> -->
-        <q-icon name="img:src/assets/logo.svg" size="lg" />
+        <q-icon name="img:logo.svg" size="lg" />
 
         <q-toolbar-title> 勤美化新 </q-toolbar-title>
         <div class="row">
