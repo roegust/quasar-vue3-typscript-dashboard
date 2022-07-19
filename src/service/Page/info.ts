@@ -11,7 +11,7 @@ interface InfoResponse {
 
 const info = async () => {
   const data = await api
-    .get('/api/ProcessingReports/PageInfo')
+    .get('/ProcessingReports/PageInfo')
     .then((response) => response.data as InfoResponse)
     .catch(() => {
       Notify.create({
