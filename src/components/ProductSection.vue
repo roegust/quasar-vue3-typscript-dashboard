@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ProductCard from 'src/components/ProductCard.vue';
+import ProductCard from './ProductCard.vue';
 import { ProductInterface } from '../store/product/state';
 
 export default defineComponent({
