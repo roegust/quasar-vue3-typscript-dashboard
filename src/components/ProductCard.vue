@@ -8,9 +8,9 @@
       style="
         width: 100%;
         border-width: 3px;
-        border-style: dashed;
-        border-color: #637371;
-        background-color: #8aa6a3;
+        border-style: solid;
+        border-color: #dee2e6;
+        background-color: #ffffff;
         padding-right: 5%;
 
         align-items: flex-end;

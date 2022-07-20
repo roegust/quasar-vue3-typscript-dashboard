@@ -1,18 +1,18 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <!-- <q-header elevated>
       <q-toolbar style="background-color: #127369">
-        <!-- <q-btn
+        <q-btn
           flat
           dense
           round
           icon=""
           aria-label="Menu"
           @click="toggleLeftDrawer"
-        /> -->
-        <!-- <div class="row">
+        />
+        <div class="row">
             <q-img src="../assets/logo.svg" fit="fill" />
-        </div> -->
+        </div>
         <q-icon name="img:logo.svg" size="lg" />
 
         <q-toolbar-title> 勤美化新 </q-toolbar-title>
@@ -38,9 +38,9 @@
           />
         </div>
       </q-toolbar>
-    </q-header>
+    </q-header> -->
 
-    <q-page-container style="background-color: #bfbfbf">
+    <q-page-container style="background-color: white">
       <router-view />
     </q-page-container>
 

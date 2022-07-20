@@ -3,7 +3,7 @@
     :rows="rawData"
     row-key="sn"
     :rows-per-page-options="pages"
-    style="background-color: #bfbfbf"
+    style="background-color: #f2f2f2"
   />
 </template>
 

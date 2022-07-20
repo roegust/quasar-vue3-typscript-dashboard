@@ -1,6 +1,11 @@
 <template>
   <q-form
-    style="width: 100%"
+    style="width: 100%;
+    display: flex;
+    justify-content:flex-start;
+    "
+
+    
     class="row flex"
     @submit="
       btnConfirm({
@@ -14,14 +19,8 @@
       })
     "
   >
-    <div class="col-md-1 q-pa-md">
-      <ExportBtn
-        :data="store.state.productsModule.rawData"
-        v-show="store.state.productsModule.rawData.length > 0"
-      />
-    </div>
-    <div class="col-md-1 q-pa-md" />
-    <div class="col-md-4 q-pa-md">
+
+    <div class="col-md-3 q-pa-md">
       <q-select
         filled
         v-model="name"
@@ -50,7 +49,6 @@
         :rules="[(val) => (val && val.length > 0) || 'Please select a day']"
       />
     </div>
-
     <div class="col-md-2 q-pa-md">
       <q-input
         filled
@@ -86,18 +84,23 @@
     </div>
 
     <div class="col-md-1 q-pa-md">
-      <q-btn type="submit" size="md" color="teal-9">
+      <q-btn type="submit" size="lg" color="blue">
         <q-icon center name="fa-solid fa-magnifying-glass" color="#bfbfbf" />
       </q-btn>
     </div>
-
     <div class="col-md-1 q-pa-md">
+      <ExportBtn
+        :data="store.state.productsModule.rawData"
+        v-show="store.state.productsModule.rawData.length > 0"
+      />
+    </div>
+    <div class="col-md-3 q-pa-md">
       <q-btn-toggle
         v-model="shiftSelected"
-        size="md"
-        style="background-color: #637371"
-        text-color="white"
-        toggle-color="teal-9"
+        size="lg"
+        style="background-color: #3f51b5"
+        text-color="black"
+        toggle-color="blue"
         :options="store.state.pageInfoModule.shifts"
       >
         <template
@@ -107,8 +110,27 @@
         >
           <q-tooltip>{{ `${shift.value.from} - ${shift.value.to}` }}</q-tooltip>
         </template>
+
+
+
+
       </q-btn-toggle>
+      <q-btn-toggle
+            v-model="isRawData"
+            size="lg"
+            style="
+              background-color: #3f51b5;
+              
+            "
+            toggle-color="blue"
+            
+            :options="[
+              { label: '圖表', value: false,  },
+              { label: '表單', value: true,  },
+            ]"
+/>
     </div>
+    
   </q-form>
 </template>
 
@@ -129,7 +151,12 @@ interface TimeRange {
 export default defineComponent({
   name: 'SearchBar',
   components: { ExportBtn },
+  
   setup() {
+
+    // TODO 【修改】圖表;表單切換按鈕位置從MainLayout header搬到SearchBar 
+
+    const isRawData = ref(false);
     const q = useQuasar();
     const today = moment().format('yyyy-MM-DD');
     const name = ref('');
@@ -173,6 +200,7 @@ export default defineComponent({
     });
 
     watch(
+      
       () => store.state.pageInfoModule.shifts,
       () => {
         const { shifts } = store.state.pageInfoModule;
@@ -181,6 +209,15 @@ export default defineComponent({
           const shift = shifts[0];
           shiftSelected.value = shift.value;
         }
+      }
+
+    );
+
+    watch(
+      () => isRawData.value,
+      (cur) => {
+        store.commit('pageInfoModule/rawDataVisible', cur);
+        console.log(store.state.pageInfoModule.isRawData)
       },
     );
 
@@ -216,6 +253,7 @@ export default defineComponent({
     };
 
     return {
+      isRawData,
       store,
       name,
       date,
