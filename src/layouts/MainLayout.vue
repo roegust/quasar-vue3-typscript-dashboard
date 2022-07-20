@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <!-- <q-header elevated>
+    <q-header elevated >
       <q-toolbar style="background-color: #127369">
         <q-btn
           flat
@@ -15,7 +15,7 @@
         </div>
         <q-icon name="img:logo.svg" size="lg" />
 
-        <q-toolbar-title> 勤美化新 </q-toolbar-title>
+        <q-toolbar-title > 勤美化新 </q-toolbar-title>
         <div class="row">
           <div class="col-md-12 offset-1">
             {{ date }}
@@ -25,7 +25,7 @@
           </div>
         </div>
 
-        <div>
+        <!-- <div>
           <q-btn-toggle
             v-model="isRawData"
             size="md"
@@ -36,9 +36,9 @@
               { label: '表單', value: true },
             ]"
           />
-        </div>
+        </div> -->
       </q-toolbar>
-    </q-header> -->
+    </q-header>
 
     <q-page-container style="background-color: white">
       <router-view />

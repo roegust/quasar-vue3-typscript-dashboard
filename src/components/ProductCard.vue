@@ -2,7 +2,7 @@
   <div
     v-for="machine in machines"
     :key="machine.name"
-    class="col-md-3 q-pa-sm q-gutter-sm justify-start flex"
+    class="col-lg-2 col-md-4 col-sm-6 justify-start flex"
   >
     <q-card
       style="
@@ -11,47 +11,82 @@
         border-style: solid;
         border-color: #dee2e6;
         background-color: #ffffff;
-        padding-right: 5%;
 
         align-items: flex-end;
         /* padding: 5px; */
       "
     >
       <!-- //TODO refactor layout -->
-      <q-card-section>
-        <div class="row" style="height: 100%">
-          <div class="col-md-6 items-center flex">
+     
+        <div class="row" style="height: 170px">
+          <div class="col-md-4 col-sm-4 col-xs-4 items-center">
             <div class="text-center text-h6" style="width: 100%">
               {{ machine.name ?? '未知機器' }}
             </div>
-            <q-img src="../assets/default_cnc3x2.svg" fit="fill" />
+            <q-img src="../assets/default_cnc3x2.png" fit="fill" />
 
             <div
-              class="text-h5 text-center text-bold text-italic"
+              class="text-h5 text-center text-bold"
               style="width: 100%"
             >
               {{ machine.operation }}
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="col-md-6">
+          <div class="col-md-5 col-sm-5 col-xs-5">
+            <div >
+
               <DoughnutChartInCard
                 :actual="machine.processRecords.length"
                 :target="machine.target"
               />
+
             </div>
-            <div class="col-md-4 text-h9 text-center">
-              <div class="row flex-end">
-                <div class="col-sm-6">
-                  <div class="col-sm-6 text-bold text-italic">數量:</div>
-                  <div class="col-sm-6">
-                    {{ machine.processRecords.length }} /
-                    {{ machine.target ?? 0 }}
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="text-h9">
+              <div class="row">
+                  <div class="col-12 text-bold">
+                    生產數量:
                   </div>
-                  <div class="col-sm-6 text-bold text-italic">操作員:</div>
+                  <div class="col-12 ">
+                    {{ machine.processRecords.length }} /
+                    {{ machine.target/1000000 ?? 0 }}
+                  </div>
+                  <div class="col-12 text-bold">
+                    標準工時:
+                  </div>
+                  <div class="col-12 ">
+                    {{
+                      `${Math.trunc(
+                        machine.estimatedProcessingTime / 1000 / 60,
+                      )} 分 ${Math.trunc(
+                        (machine.estimatedProcessingTime / 1000) % 60,
+                      )} 秒`
+                    }}
+                  </div>
+                  <div class="col-12 text-bold">
+                    平均工時:
+                  </div>
+                  <div class="col-12 ">
+                    {{
+                      `${Math.trunc(
+                        machine.avgProcessingTime / 60,
+                      )} 分 ${Math.trunc(machine.avgProcessingTime % 60)} 秒`
+                    }}
+                  </div>
+                  <div class="col-12 text-bold">
+                    操作人員:
+                  </div>
+                  <div class="col-12 ">
+                    {{ machine.user ?? '未知人員' }}
+                  </div>
+                <div>
+                  
+                  <!-- <div class="col-sm-6 text-bold text-italic">操作員:</div>
                   <div class="col-sm-6">
                     {{ machine.user ?? '未知操作員' }}
                   </div>
+
                 </div>
                 <div class="col-sm-6">
                   <div class="col-sm-6 text-bold text-italic">標準工時:</div>
@@ -71,11 +106,15 @@
                         machine.avgProcessingTime / 60,
                       )} 分 ${Math.trunc(machine.avgProcessingTime % 60)} 秒`
                     }}
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
           </div>
+
+
+
+
           <!-- <div class="col-sm-6 text-h5 text-bold text-center">
             {{
               `達成率: ${
@@ -90,7 +129,7 @@
             }}
           </div> -->
         </div>
-      </q-card-section>
+   
     </q-card>
   </div>
 </template>

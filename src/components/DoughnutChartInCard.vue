@@ -62,7 +62,7 @@ export default defineComponent({
       },
       plugins: {
         title: {
-          display: true,
+          display: false,
           text: `達成率: ${successRate.value / 100}%`,
           color: '#10403B',
           position: 'top',
@@ -75,7 +75,7 @@ export default defineComponent({
         },
       },
       animation: {
-        animateScale: true,
+        animateScale: false,
       },
     });
 

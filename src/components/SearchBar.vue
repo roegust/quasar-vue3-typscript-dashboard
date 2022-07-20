@@ -95,6 +95,23 @@
       />
     </div>
     <div class="col-md-3 q-pa-md">
+<!-- 
+            <q-btn color="primary" label="Jump Menu" size="lg">
+        <q-menu
+          transition-show="jump-down"
+          transition-hide="jump-up"
+
+          
+        >
+          <q-list style="min-width: 100px" >
+            <q-item clickable>
+              <q-item-section>Having fun</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn> -->
+
+
       <q-btn-toggle
         v-model="shiftSelected"
         size="lg"
