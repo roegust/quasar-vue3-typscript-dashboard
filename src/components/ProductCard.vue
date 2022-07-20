@@ -35,11 +35,9 @@
           </div>
           <div class="col-md-6">
             <div class="col-md-6">
-              <DoughnutChart
-                v-bind="
-                  makeChartConfig(machine.target, machine.processRecords.length)
-                    .value
-                "
+              <DoughnutChartInCard
+                :actual="machine.processRecords.length"
+                :target="machine.target"
               />
             </div>
             <div class="col-md-4 text-h9 text-center">
@@ -98,74 +96,81 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
-import { DoughnutChart, useDoughnutChart } from 'vue-chart-3';
-import { Chart, ChartData, ChartOptions, registerables } from 'chart.js';
+import { defineComponent } from 'vue';
+import { Chart, registerables } from 'chart.js';
+import DoughnutChartInCard from './DoughnutChartInCard.vue';
+// import { DoughnutChart, useDoughnutChart } from 'vue-chart-3';
 import { MachineInterface } from '../store/product/state';
 
 Chart.register(...registerables);
 export default defineComponent({
   name: 'ProductCard',
   // eslint-disable-next-line vue/no-unused-components
-  components: { DoughnutChart },
+  components: { DoughnutChartInCard },
   props: {
     machines: Object as () => MachineInterface[],
   },
   setup() {
     // const testArr1 = [...Array(Math.floor(Math.random() * 9) + 1).keys()];
 
-    const makeChartConfig = (target: number, actual: number) => {
-      const chartColor = actual / target < 0.8 ? '#f06292' : '#81c784';
-      const remain = (target ?? actual) - actual;
-      const chartData = computed<ChartData<'doughnut'>>(() => ({
-        // labels: ['Success'],
-        datasets: [
-          {
-            data: [actual, remain < 0 ? 0 : remain],
-            backgroundColor: [chartColor, '#BFBFBF'],
-          },
-        ],
-      }));
+    // const makeChartConfig = (
+    //   target: number,
+    //   records: ProcessRecordInterface[],
+    // ) => {
+    //   const actual = computed<number>(() => records.length);
 
-      const successRate =
-        Math.round((actual / target) * 10000) === Infinity
-          ? 10000
-          : Math.round((actual / target) * 10000);
-      const options = computed<ChartOptions<'doughnut'>>(() => ({
-        responsive: true,
-        layout: {
-          padding: {
-            top: 10,
-          },
-        },
-        plugins: {
-          title: {
-            display: true,
-            text: `達成率: ${successRate / 100}%`,
-            color: '#10403B',
-            position: 'top',
-            font: {
-              size: 20,
-            },
-          },
-          legend: {
-            position: 'bottom',
-          },
+    //   const chartColor = actual.value / target < 0.8 ? '#f06292' : '#81c784';
+    //   const remain = (target ?? actual) - actual.value;
+    //   const chartData = computed<ChartData<'doughnut'>>(() => ({
+    //     // labels: ['Success'],
+    //     datasets: [
+    //       {
+    //         data: [actual.value, remain < 0 ? 0 : remain],
+    //         backgroundColor: [chartColor, '#BFBFBF'],
+    //       },
+    //     ],
+    //   }));
 
-          // clip: { left: 0, top: 0, right: -2, bottom: false },
-        },
-        animation: {
-          animateScale: true,
-        },
-      }));
+    //   const successRate =
+    //     Math.round((actual.value / target) * 10000) === Infinity
+    //       ? 10000
+    //       : Math.round((actual.value / target) * 10000);
+    //   const options = computed<ChartOptions<'doughnut'>>(() => ({
+    //     responsive: true,
+    //     layout: {
+    //       padding: {
+    //         top: 10,
+    //       },
+    //     },
+    //     plugins: {
+    //       title: {
+    //         display: true,
+    //         text: `達成率: ${successRate / 100}%`,
+    //         color: '#10403B',
+    //         position: 'top',
+    //         font: {
+    //           size: 20,
+    //         },
+    //       },
+    //       legend: {
+    //         position: 'bottom',
+    //       },
 
-      const { doughnutChartProps } = useDoughnutChart({
-        chartData,
-        options,
-      });
-      return doughnutChartProps;
-    };
-    return { makeChartConfig };
+    //       // clip: { left: 0, top: 0, right: -2, bottom: false },
+    //     },
+    //     animation: {
+    //       animateScale: true,
+    //     },
+    //   }));
+
+    //   const { doughnutChartProps } = useDoughnutChart({
+    //     chartData,
+    //     options,
+    //   });
+    //   return doughnutChartProps;
+    // };
+
+    return {};
   },
 });
 </script>
