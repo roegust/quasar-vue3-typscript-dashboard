@@ -26,7 +26,7 @@ export default defineComponent({
     const target = ref(props.target ?? 0);
 
     const chartColor = computed(() =>
-      actual.value / target.value < 0.8 ? '#f06292' : '#81c784',
+      actual.value / target.value < 0.8 ? '#f06292' : '#3f51b5',
     );
 
     const remain = computed(() =>

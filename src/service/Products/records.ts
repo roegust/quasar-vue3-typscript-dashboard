@@ -14,7 +14,7 @@ const records = async (
 ): Promise<ProductsResponse> => {
   const data = await api
     .get(
-      `/ProcessingReports?start=${payload.from}&end=${payload.to}&from=${payload.shiftSelected.from}&to=${payload.shiftSelected.to}&productName=${payload.name}`,
+      `/ProcessingReports?start=${payload.from}&end=${payload.to}&from=${payload.shiftSelected.from}&to=${payload.shiftSelected.to}`,
     )
     .then((response) => response.data as ProductsResponse)
     .catch(() => {

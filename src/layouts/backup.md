@@ -1,12 +1,14 @@
-<style lang="scss" scoped>
-  .row{ 
-      margin:0px 0px 0px 0px;
+<style>
+  .row{
+    width: 100%;
   }
 </style>
+
+
 <template>
 <div class="form">
 
-  <q-form 
+  <q-form
       @submit="
         btnConfirm({
           name,
@@ -21,10 +23,9 @@
     >
     
       <div class="row">
-            <div class="col-md-3 q-pr-md q-gutter-xs self-center">
+            <div class="col-md-3 q-pr-md q-pt-md q-gutter-xs self-center">
               <q-select
                 filled
-                bg-color="white"
                 v-model="name"
                 use-input
                 input-debounce="0"
@@ -42,10 +43,9 @@
               </q-select>
             </div>
 
-            <div class="col-md-2 q-pr-md q-gutter-xs self-center">
+            <div class="col-md-2 q-pr-md q-pt-md q-gutter-xs self-center">
               <q-input
-                filled
-                bg-color="white"
+                Outlined
                 :readonly="true"
                 v-model="from"
                 label="開始時間"
@@ -54,10 +54,9 @@
               />
             </div>
 
-            <div class="col-md-2 q-pr-md q-gutter-xs self-center">
+            <div class="col-md-2 q-pr-md q-pt-md q-gutter-xs self-center">
               <q-input
-                filled
-                bg-color="white"
+                Outlined
                 :readonly="true"
                 v-model="to"
                 label="結束時間"
@@ -88,7 +87,7 @@
               </q-input>
             </div>
 
-            <div class="col-md-1 q-pr-md q-gutter-xs self-center" style="padding-left:10px ;">
+            <div class="col-md-1 q-pr-md self-center q-gutter-xs">
               <q-btn 
                 unelevated rounded 
                 padding="8px" 
@@ -101,14 +100,14 @@
               </q-btn>
             </div>
 
-            <div class="col-md-1 q-pr-md q-gutter-xs q-pl-xs self-center" style="padding-left:20px ;">
+            <div class="col-md-1 q-pr-md self-center q-gutter-xs q-pl-xs">
               <ExportBtn
                 :data="store.state.productsModule.rawData"
                 :disabled="store.state.productsModule.rawData.length > 0"
               />
             </div>
 
-            <div class="col-md-1 q-pr-md q-pl-md q-gutter-xs self-center" style="padding-left:30px ;">
+            <div class="col-md-1 q-pr-md self-center q-gutter-xs"  style="padding-left: 5px;">
               <q-btn-dropdown  
                 unelevated 
                 rounded 
@@ -117,7 +116,7 @@
                 color="primary" 
                 label="班別" 
                 size="13px"
-                style="width: 100px"
+                style="width: 100px;"
                 >
                   <q-list>
                     <q-item clickable v-close-popup @click="onItemClick">
@@ -159,7 +158,7 @@
         
             </div>
 
-            <div class="col-md-1 q-pr-md q-gutter-xs q-pa-lg self-center" style="padding-left:40px ;">
+            <div class="col-md-1 self-center q-pr-md q-gutter-xs q-pa-lg" style="padding-left: 7px;">
         
               <q-btn-dropdown
                 unelevated 
@@ -206,7 +205,7 @@
                     ]"/> -->
             </div>
 
-            <div class="col-md-1 q-gutter-xs q-pa-lg self-center" style="padding-left:100px ;">
+            <div class="md-auto self-center q-gutter-xs q-pa-lg ">
               <q-btn 
                 unelevated rounded 
                 padding="9px" 
