@@ -343,7 +343,6 @@ export default defineComponent({
       () => isRawData.value,
       (cur) => {
         store.commit('pageInfoModule/rawDataVisible', cur);
-        console.log(store.state.pageInfoModule.isRawData);
       },
     );
 
