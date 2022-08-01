@@ -24,7 +24,8 @@
     "vue": "^3.0.0",
     "vue-chart-3": "^3.1.8",
     "vue-router": "^4.0.0",
-    "vuex": "^4.0.1"
+    "vuex": "^4.0.1",
+    "vuex-multi-tab-state": "^1.0.17"
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.0.0",

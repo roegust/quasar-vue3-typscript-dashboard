@@ -6,6 +6,7 @@ import {
   useStore as vuexUseStore,
 } from 'vuex';
 
+import createMultiTabState from 'vuex-multi-tab-state';
 import productsModule from './product';
 import pageInfoModule from './pageInfo';
 import { ProductsInterface } from './product/state';
@@ -42,10 +43,14 @@ export const storeKey: InjectionKey<VuexStore<StateInterface>> =
 export default store((/* { ssrContext } */) => {
   const Store = createStore<StateInterface>({
     modules: {
-      // example
       productsModule,
       pageInfoModule,
     },
+    plugins: [
+      createMultiTabState({
+        statesPaths: ['pageInfoModule.name'],
+      }),
+    ],
 
     // enable strict mode (adds overhead!)
     // for dev mode and --debug builds only
