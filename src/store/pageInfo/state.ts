@@ -4,6 +4,10 @@ export interface ShiftsResInterface {
   from: string;
   to: string;
 }
+export interface ProductsResInterface {
+  id: string;
+  name: string;
+}
 
 export interface ShiftsInterface {
   label: string;
@@ -14,8 +18,13 @@ export interface ShiftsInterface {
   slot: string;
 }
 
+export interface ProductsInterface {
+  label: string;
+  value: string;
+}
+
 export interface PageInfoInterface {
-  name: string;
+  name: string[];
   from: string;
   to: string;
   isRawData: boolean;
@@ -23,13 +32,13 @@ export interface PageInfoInterface {
     from: string;
     to: string;
   };
-  products: string[];
+  products: ProductsInterface[];
   shifts: ShiftsInterface[];
 }
 
 function state(): PageInfoInterface {
   return {
-    name: '',
+    name: [],
     from: '',
     to: '',
     isRawData: false,

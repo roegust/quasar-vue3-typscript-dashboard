@@ -1,10 +1,13 @@
 import { api } from 'boot/axios';
 import { Notify } from 'quasar';
-import { ShiftsResInterface } from '../../store/pageInfo/state';
+import {
+  ShiftsResInterface,
+  ProductsResInterface,
+} from '../../store/pageInfo/state';
 
 interface InfoResponse {
   content: {
-    products: string[];
+    products: ProductsResInterface[];
     shifts: ShiftsResInterface[];
   };
 }

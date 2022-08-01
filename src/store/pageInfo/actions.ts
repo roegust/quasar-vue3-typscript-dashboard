@@ -14,8 +14,14 @@ const actions: ActionTree<PageInfoInterface, StateInterface> = {
         value: { from: item.from, to: item.to },
         slot: item.id.toString(),
       }));
-    products.sort();
-    commit('setPageOptions', { products, shifts: newShifts });
+
+    const productsOption = products
+      .sort((a, b) => a.id.localeCompare(b.id))
+      .map((item) => ({
+        label: `${item.id}  -  ${item.name}`,
+        value: item.id,
+      }));
+    commit('setPageOptions', { products: productsOption, shifts: newShifts });
   },
   submit({ commit }, payload: PageInfoInterface) {
     // your code
