@@ -1,7 +1,7 @@
 <style lang="scss" scoped>
-  .row{
-    padding-top: 1em;
-  }
+.row {
+  padding-top: 1em;
+}
 </style>
 
 <template>
@@ -11,13 +11,12 @@
     v-for="product in products"
     :key="product.name + product.carft"
   >
-    <p style="padding-left: 15px; font-size: large;">
-    {{ product.name ?? 'Unknown Product' }}
-    </p> 
-    <hr/>
+    <p style="padding-left: 15px; font-size: large">
+      {{ `${product.id} / ${product.name}` ?? 'Unknown Product' }}
+    </p>
+    <hr />
     {{ product.carft ? `(${product.carft})` : '' }}
-  
- 
+
     <!-- <div class="row q-pa-md">
       <q-card style="background: #3f51b5" class="text-white text-bold">
         <q-card-section >
@@ -28,7 +27,7 @@
     </div> -->
 
     <div class="row">
-        <ProductCard :machines="product.machines" />
+      <ProductCard :machines="product.machines" />
     </div>
   </div>
 </template>
@@ -43,6 +42,7 @@ export default defineComponent({
   components: { ProductCard },
   props: {
     products: Object as () => ProductInterface[],
+    type: String,
   },
   setup() {
     // const testArr = [...Array(Math.floor(Math.random() * 10)).keys()];
