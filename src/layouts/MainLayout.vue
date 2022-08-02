@@ -1,16 +1,9 @@
 <style>
   .background{
     background: linear-gradient(90deg,#b8b8b8,white 50%,#b8b8b8);
-
     display: flex;
     justify-content: flex-start;
   }
-  .row{
-    
-    padding:0px 0px 0px 0px;
-  }
-
-
 </style>
 
 <template>

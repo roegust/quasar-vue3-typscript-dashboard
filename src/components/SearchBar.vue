@@ -1,7 +1,5 @@
 <style lang="scss" scoped>
-.row {
-  margin: 0px 0px 0px 0px;
-}
+
 </style>
 <template>
   <div class="form">
@@ -82,7 +80,7 @@
                     color="primary"
                     @range-end="rangeComputed(date)"
                   >
-                    <div class="row items-center justify-end">
+                    <div class="items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
                   </q-date>
