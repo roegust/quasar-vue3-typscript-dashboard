@@ -10,12 +10,9 @@
     :key="product.name + product.carft"
   >
     <p class="row" style="font-size: large">
-      {{ `${product.id} / ${product.name}` ?? 'Unknown Product' }}
+      {{ `${product.id} / ${product.name}` ?? 'Unknown Product' }} -       {{ product.carft ? `(${product.carft})` : '' }}
     </p>
     <hr />
-    <p class="row" style="font-size: large">
-      {{ product.carft ? `(${product.carft})` : '' }}
-    </p>
 
     <!-- <div class="row q-pa-md">
       <q-card style="background: #3f51b5" class="text-white text-bold">

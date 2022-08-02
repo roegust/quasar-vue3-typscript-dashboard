@@ -12,3 +12,8 @@ body { font-family: 'Noto Sans TC'!important;}
     width: 100%;
 }
 
+.background {
+    background: linear-gradient(90deg, #b8b8b8, white 50%, #b8b8b8);
+    display: flex;
+    justify-content: flex-start;
+}

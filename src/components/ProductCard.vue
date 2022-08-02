@@ -10,7 +10,7 @@
     style="padding: 0em 1em 1em 0em"
     v-for="machine in machines"
     :key="machine.name"
-    class="col-lg-4 col-md-3 col-sm-6 justify-start flex"
+    class="col-lg-3 col-md-4 col-sm-6 col-xs-12 justify-start flex"
   >
     <q-card
       style="
@@ -25,11 +25,11 @@
     >
       <!-- //TODO refactor layout -->
 
-      <div class="row" style="height: 170px">
-        <div class="col-md-4 col-sm-4 col-xs-4 items-center q-pt-md">
-          <div class="text-center text-h4" style="width: 100%">
-            <!-- {{ 1026 }} -->
-            {{ machine.name ?? '未知機器' }}
+      <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-4 self-center">
+          <div class="text-center text-h5" style="width: 100%">
+            {{ "車銑複合01" }}
+            <!-- {{ machine.name ?? '未知機器' }} -->
           </div>
           <q-img src="../assets/default_cnc3x2.png" fit="fill" />
 
@@ -37,7 +37,7 @@
             {{ machine.operation }}
           </div>
         </div>
-        <div class="col-md-3 col-sm-3 col-xs-3">
+        <div class="col-md-3 col-sm-3 col-xs-3 self-center">
           <div class="text-h9">
             <div class="row">
               <div class="col-12 text-bold">生產數量:</div>
@@ -71,7 +71,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-5 col-sm-5 col-xs-5 q-pt-md">
+        <div class="col-md-5 col-sm-5 col-xs-5 self-center">
           <div>
             <DoughnutChartInCard
               :id="machine.name"
