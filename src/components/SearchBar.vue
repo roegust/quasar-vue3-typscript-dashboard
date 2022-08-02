@@ -1,6 +1,3 @@
-<style lang="scss" scoped>
-
-</style>
 <template>
   <div class="form">
     <q-form
@@ -10,6 +7,7 @@
           from,
           to,
           shiftSelected: {
+            label: shiftSelected.label,
             from: shiftSelected.from,
             to: shiftSelected.to,
           },
@@ -114,7 +112,6 @@
           <ExportBtn
             :data="store.state.productsModule.rawData"
             :disable="store.state.productsModule.rawData.length === 0"
-            v-if="$props.type === 'history'"
           />
         </div>
 
@@ -128,10 +125,11 @@
             class="icon"
             padding="8px"
             color="primary"
-            label="班別"
+            :label="
+              shiftSelected.label === undefined ? '班別' : shiftSelected.label
+            "
             size="13px"
             style="width: 100px"
-            v-if="$props.type === 'history'"
           >
             <q-list>
               <template
@@ -141,7 +139,13 @@
                 <q-item
                   clickable
                   v-close-popup
-                  @click="shiftChanged(shift.value)"
+                  @click="
+                    shiftChanged({
+                      label: shift.label,
+                      from: shift.value.from,
+                      to: shift.value.to,
+                    })
+                  "
                 >
                   <q-item-section>
                     <q-item-label>{{ shift.label }}</q-item-label>
@@ -149,43 +153,7 @@
                 </q-item>
               </template>
             </q-list>
-            <!-- <q-list>
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>option_1</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>option_2</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>option_3</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list> -->
           </q-btn-dropdown>
-
-          <!-- <q-btn-toggle 
-                square outlined
-                v-model="shiftSelected"
-                size="15px"
-                text-color="primary"
-                toggle-color="primary"
-                :options="store.state.pageInfoModule.shifts"
-              >
-                <template
-                  v-for="shift in store.state.pageInfoModule.shifts"
-                  :key="shift.label"
-                  v-slot:[shift.slot]
-                >
-                  <q-tooltip>{{ `${shift.value.from} - ${shift.value.to}` }}</q-tooltip>
-                </template>
-              </q-btn-toggle> -->
         </div>
 
         <div
@@ -198,7 +166,9 @@
             class="icon"
             padding="8px"
             color="primary"
-            label="顯示"
+            :label="
+              isRawData === null ? '顯示' : isRawData === true ? '表單' : '圖表'
+            "
             size="13px"
             style="width: 100px"
           >
@@ -272,6 +242,7 @@ import ExportExcel from '../service/ExportExcel';
 import { ProductsInterface } from '../store/pageInfo/state';
 
 interface TimeRange {
+  label: string;
   from: string;
   to: string;
 }
@@ -279,12 +250,9 @@ interface TimeRange {
 export default defineComponent({
   name: 'SearchBar',
   components: { ExportBtn },
-  props: {
-    type: String,
-  },
   setup() {
     // TODO 【修改】圖表;表單切換按鈕位置從MainLayout header搬到SearchBar
-    const isRawData = ref(false);
+    const isRawData = ref(null as boolean | null);
     const q = useQuasar();
     const today = moment().format('yyyy-MM-DD');
     const name = ref([] as string[]);
@@ -325,17 +293,17 @@ export default defineComponent({
       store.dispatch('pageInfoModule/collect');
     });
 
-    watch(
-      () => store.state.pageInfoModule.shifts,
-      () => {
-        const { shifts } = store.state.pageInfoModule;
+    // watch(
+    //   () => store.state.pageInfoModule.shifts,
+    //   () => {
+    //     const { shifts } = store.state.pageInfoModule;
 
-        if (shifts.length > 0) {
-          const shift = shifts[0];
-          shiftSelected.value = shift.value;
-        }
-      },
-    );
+    //     if (shifts.length > 0) {
+    //       const shift = shifts[0];
+    //       shiftSelected.value = shift.value;
+    //     }
+    //   },
+    // );
 
     watch(
       () => isRawData.value,
@@ -350,7 +318,28 @@ export default defineComponent({
       to: string;
       shiftSelected: TimeRange;
     }) => {
-      if (name.value.length > 0) {
+      let chk = true;
+
+      if (isRawData.value === null) {
+        q.notify({
+          type: 'negative',
+          message: '請選擇顯示方式',
+        });
+
+        chk = false;
+      }
+      if (shiftSelected.value.label === undefined) {
+        q.notify({
+          type: 'negative',
+          message: '請選擇需要的班別',
+          multiLine: false,
+          timeout: 2000,
+        });
+
+        chk = false;
+      }
+
+      if (name.value.length > 0 && chk) {
         q.loading.show({
           message: 'Transforming data. Please wait...',
           boxClass: 'bg-grey-2 text-grey-9',
@@ -381,6 +370,7 @@ export default defineComponent({
 
     const presentationChanged = (val: boolean) => {
       store.commit('pageInfoModule/rawDataVisible', val);
+      isRawData.value = val;
     };
 
     return {

@@ -28,8 +28,8 @@
       <div class="row" style="height: 170px">
         <div class="col-md-4 col-sm-4 col-xs-4 items-center q-pt-md">
           <div class="text-center text-h4" style="width: 100%">
-            {{ 1026 }}
-            <!-- {{ machine.name ?? '未知機器' }} -->
+            <!-- {{ 1026 }} -->
+            {{ machine.name ?? '未知機器' }}
           </div>
           <q-img src="../assets/default_cnc3x2.png" fit="fill" />
 
@@ -67,33 +67,7 @@
               <div class="col-12" style="font-size: 13px">
                 {{ machine.user ?? '未知人員' }}
               </div>
-              <div>
-                <!-- <div class="col-sm-6 text-bold text-italic">操作員:</div>
-                    <div class="col-sm-6">
-                      {{ machine.user ?? '未知操作員' }}
-                    </div>
-  
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="col-sm-6 text-bold text-italic">標準工時:</div>
-                    <div class="col-sm-6">
-                      {{
-                        `${Math.trunc(
-                          machine.estimatedProcessingTime / 1000 / 60,
-                        )} 分 ${Math.trunc(
-                          (machine.estimatedProcessingTime / 1000) % 60,
-                        )} 秒`
-                      }}
-                    </div>
-                    <div class="col-sm-6 text-bold text-italic">平均工時:</div>
-                    <div class="col-sm-6">
-                      {{
-                        `${Math.trunc(
-                          machine.avgProcessingTime / 60,
-                        )} 分 ${Math.trunc(machine.avgProcessingTime % 60)} 秒`
-                      }}
-                    </div> -->
-              </div>
+              <div></div>
             </div>
           </div>
         </div>
@@ -106,20 +80,6 @@
             />
           </div>
         </div>
-
-        <!-- <div class="col-sm-6 text-h5 text-bold text-center">
-            {{
-              `達成率: ${
-                (Math.round(
-                  (machine.processRecords.length / machine.target) * 10000,
-                ) === Infinity
-                  ? 10000
-                  : Math.round(
-                      (machine.processRecords.length / machine.target) * 10000,
-                    )) / 100
-              }%`
-            }}
-          </div> -->
       </div>
     </q-card>
   </div>
@@ -127,12 +87,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Chart, registerables } from 'chart.js';
 import DoughnutChartInCard from './DoughnutChartInCard.vue';
 // import { DoughnutChart, useDoughnutChart } from 'vue-chart-3';
 import { MachineInterface } from '../store/product/state';
 
-Chart.register(...registerables);
 export default defineComponent({
   name: 'ProductCard',
   // eslint-disable-next-line vue/no-unused-components
