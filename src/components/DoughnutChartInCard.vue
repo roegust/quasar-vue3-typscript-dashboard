@@ -3,7 +3,9 @@
     ref="doughnutChartRef"
     :chart-data="chartData"
     :options="options"
-  />
+  >
+    test
+  </DoughnutChart>
 </template>
 
 <script lang="ts">
@@ -22,7 +24,7 @@ export default defineComponent({
   setup(props) {
     const doughnutChartRef = ref();
     const actual = ref(props.actual ?? 0);
-    const target = ref(props.target ?? 0);
+    const target = ref(10);
 
     const chartColor = computed(() =>
       actual.value / target.value < 0.8 ? '#f06292' : '#3f51b5',
@@ -53,16 +55,8 @@ export default defineComponent({
     );
 
     const options = ref({
-      elements: {
-        center: {
-          text: 'Red is 2/3 the total numbers',
-          color: '#FF6384', // Default is #000000
-          fontStyle: 'Arial', // Default is Arial
-          sidePadding: 20, // Default is 20 (as a percentage)
-          minFontSize: 20, // Default is 20 (in px), set to false and text will not wrap.
-          lineHeight: 25, // Default is 25 (in px), used for when text wraps
-        },
-      },
+      cutout: '70%',
+      radius: '90%',
       responsive: true,
       layout: {
         padding: {
@@ -81,6 +75,11 @@ export default defineComponent({
         },
         legend: {
           display: false,
+        },
+      },
+      elements: {
+        arc: {
+          borderRadius: 15,
         },
       },
       animation: {
