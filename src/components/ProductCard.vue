@@ -100,6 +100,7 @@
         <div class="col-md-5 col-sm-5 col-xs-5 q-pt-md">
           <div>
             <DoughnutChartInCard
+              :id="machine.name"
               :actual="machine.processRecords.length"
               :target="machine.target"
             />

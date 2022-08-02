@@ -13,7 +13,7 @@
     "@mdi/js": "^7.0.96",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
-    "chart.js": "^3.8.0",
+    "echarts": "^5.3.3",
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
     "lodash": "^4.17.21",
@@ -22,7 +22,7 @@
     "moment-timezone": "^0.5.34",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",
-    "vue-chart-3": "^3.1.8",
+    "vue-echarts": "^6.2.3",
     "vue-router": "^4.0.0",
     "vuex": "^4.0.1",
     "vuex-multi-tab-state": "^1.0.17"
