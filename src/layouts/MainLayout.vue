@@ -1,34 +1,30 @@
 <style>
-  .background{
-    background: linear-gradient(90deg,#b8b8b8,white 50%,#b8b8b8);
+.background {
+  background: linear-gradient(90deg, #b8b8b8, white 50%, #b8b8b8);
 
-    display: flex;
-    justify-content: flex-start;
-  }
-  .row{
-    
-    padding:0px 0px 0px 0px;
-  }
-
-
+  display: flex;
+  justify-content: flex-start;
+}
 </style>
 
 <template>
   <div class="q-pa-none">
-    <q-layout view="lHh lpr lFf" container style="height: 100vh" class="shadow-2 rounded-borders">
+    <q-layout
+      view="lHh lpr lFf"
+      container
+      style="height: 100vh"
+      class="shadow-2 rounded-borders"
+    >
       <q-header elevated>
         <q-toolbar>
-    
-          <q-toolbar-title>
-          </q-toolbar-title>
+          <q-toolbar-title> </q-toolbar-title>
         </q-toolbar>
       </q-header>
 
       <q-page-container>
         <q-page>
           <div class="background">
-            
-            <router-view />          
+            <router-view />
           </div>
         </q-page>
       </q-page-container>
