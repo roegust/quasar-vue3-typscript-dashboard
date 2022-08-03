@@ -1,8 +1,9 @@
 <template>
-  <div class="form">
+  <div class="form ">
     <q-form
       @submit="
         btnConfirm({
+          
           name,
           from,
           to,
@@ -15,47 +16,51 @@
       "
     >
       <div class="row">
-        <div class="col-md-3 q-pr-md q-gutter-xs self-center">
-          <q-select
-            filled
-            bg-color="white"
-            v-model="name"
-            use-input
-            input-debounce="0"
-            label="產品名稱"
-            wrap
-            multiple
-            use-chips
-            option-value="value"
-            option-label="label"
-            emit-value
-            map-options
-            :stack-label="true"
-            :options="options"
-            @filter="filterFn"
-            :rules="[(val) => val.length > 0 || 'Please select a product']"
-          >
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey"> 找不到結果 </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
-        </div>
 
-        <div class="col-md-2 q-pr-md q-gutter-xs self-center">
-          <q-input
-            filled
-            bg-color="white"
-            :readonly="true"
-            v-model="from"
-            label="開始時間"
-            :stack-label="true"
-            :rules="[(val) => (val && val.length > 0) || 'Please select a day']"
-          />
-        </div>
+        <div class="row justify-between col-md-7">
+          
+          <div class="col-md-5">
+            <q-select
+              filled
+              hide-selected
+              bg-color="white"
+              v-model="name"
+              use-input
+              input-debounce="0"
+              label="產品名稱"
+              wrap
+              multiple
+              use-chips
+              option-value="value"
+              option-label="label"
+              emit-value
+              map-options
+              :stack-label="true"
+              :options="options"
+              @filter="filterFn"
+              :rules="[(val) => val.length > 0 || 'Please select a product']"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey"> 找不到結果 </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </div>
 
-        <div class="col-md-2 q-pr-md q-gutter-xs self-center">
+          <div class="col-md-3">
+            <q-input
+              filled
+              bg-color="white"
+              :readonly="true"
+              v-model="from"
+              label="開始時間"
+              :stack-label="true"
+              :rules="[(val) => (val && val.length > 0) || 'Please select a day']"
+            />
+          </div>
+
+          <div class="col-md-3">
           <q-input
             filled
             bg-color="white"
@@ -88,144 +93,114 @@
           </q-input>
         </div>
 
-        <div
-          class="col-md-1 q-pr-md q-gutter-xs self-center"
-          style="padding-left: 10px"
-        >
-          <q-btn
-            unelevated
-            rounded
-            padding="8px"
-            color="primary"
-            size="15x"
-            type="submit"
-            style="width: 100px"
-          >
-            搜尋<q-icon center name="search" />
-          </q-btn>
-        </div>
 
-        <div
-          class="col-md-1 q-pr-md q-gutter-xs q-pl-xs self-center"
-          style="padding-left: 20px"
-        >
-          <ExportBtn
-            :data="store.state.productsModule.rawData"
-            :disable="store.state.productsModule.rawData.length === 0"
-          />
         </div>
-
-        <div
-          class="col-md-1 q-pr-md q-pl-md q-gutter-xs self-center"
-          style="padding-left: 30px"
-        >
-          <q-btn-dropdown
-            unelevated
-            rounded
-            class="icon"
-            padding="8px"
-            color="primary"
-            :label="
-              shiftSelected.label === undefined ? '班別' : shiftSelected.label
-            "
-            size="13px"
-            style="width: 100px"
-          >
-            <q-list>
-              <template
-                v-for="shift in store.state.pageInfoModule.shifts"
-                :key="shift.label"
-              >
+        
+        <div class="row col-md-5 justify-between ">
+          <div class="col-md-3 q-pa-md ">
+            <q-btn
+              unelevated
+              rounded
+              color="primary"
+              type="submit"
+              style="width: 100px"
+            >
+              搜尋<q-icon center name="search" />
+            </q-btn>
+          </div>
+          <div class="col-md-3 q-pa-md">
+            <ExportBtn
+              :data="store.state.productsModule.rawData"
+              :disable="store.state.productsModule.rawData.length === 0"
+            />
+          </div>
+          <div class="col-md-3 q-pa-md">
+            <q-btn-dropdown
+              unelevated
+              rounded
+              class="icon"
+              padding="8px"
+              color="primary"
+              :label="
+                shiftSelected.label === undefined ? '班別' : shiftSelected.label
+              "
+              style="width: 100px"
+            >
+              <q-list>
+                <template
+                  v-for="shift in store.state.pageInfoModule.shifts"
+                  :key="shift.label"
+                >
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="
+                      shiftChanged({
+                        label: shift.label,
+                        from: shift.value.from,
+                        to: shift.value.to,
+                      })
+                    "
+                  >
+                    <q-item-section>
+                      <q-item-label>{{ shift.label }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-list>
+            </q-btn-dropdown>
+          </div>
+          <div class="col-md-3 q-pa-md">
+            <q-btn-dropdown
+              unelevated
+              rounded
+              class="icon"
+              padding="8px"
+              color="primary"
+              :label="
+                isRawData === null ? '顯示' : isRawData === true ? '表單' : '圖表'
+              "
+              style="width: 100px"
+            >
+              <q-list>
                 <q-item
                   clickable
                   v-close-popup
-                  @click="
-                    shiftChanged({
-                      label: shift.label,
-                      from: shift.value.from,
-                      to: shift.value.to,
-                    })
-                  "
+                  @click="presentationChanged(false)"
                 >
                   <q-item-section>
-                    <q-item-label>{{ shift.label }}</q-item-label>
+                    <q-item-label>圖表</q-item-label>
                   </q-item-section>
                 </q-item>
-              </template>
-            </q-list>
-          </q-btn-dropdown>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="presentationChanged(true)"
+                >
+                  <q-item-section>
+                    <q-item-label>表單</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </div>
+          <!-- <div class="col-md-1 q-pa-md">
+            <q-btn unelevated rounded padding="9px" color="primary" size="20px">
+              <i class="fa-solid fa-gear"></i>
+              <q-popup-proxy>
+                <q-banner>
+                  <template v-slot:avatar>
+                    <q-icon name="signal_wifi_off" color="primary" />
+                  </template>
+                  You have lost connection to the internet. This app is offline.
+                </q-banner>
+              </q-popup-proxy>
+            </q-btn>
+          </div> -->
         </div>
 
-        <div
-          class="col-md-1 q-pr-md q-gutter-xs q-pa-lg self-center"
-          style="padding-left: 40px"
-        >
-          <q-btn-dropdown
-            unelevated
-            rounded
-            class="icon"
-            padding="8px"
-            color="primary"
-            :label="
-              isRawData === null ? '顯示' : isRawData === true ? '表單' : '圖表'
-            "
-            size="13px"
-            style="width: 100px"
-          >
-            <q-list>
-              <q-item
-                clickable
-                v-close-popup
-                @click="presentationChanged(false)"
-              >
-                <q-item-section>
-                  <q-item-label>圖表</q-item-label>
-                </q-item-section>
-              </q-item>
 
-              <q-item
-                clickable
-                v-close-popup
-                @click="presentationChanged(true)"
-              >
-                <q-item-section>
-                  <q-item-label>表單</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
-
-          <!-- <q-btn-toggle
-                    v-model = "isRawData"
-                    
-                    size = "15px"
-                    style = "
-                    color : 'disRawData.color'
-                    width 
-                    "
-                    
-                    :options="[
-                      { label: '圖表', value: false, color: 'primary'},
-                      { label: '表單', value: true,  color: 'primary'},
-                    ]"/> -->
-        </div>
-
-        <div
-          class="col-md-1 q-gutter-xs q-pa-lg self-center"
-          style="padding-left: 100px"
-        >
-          <q-btn unelevated rounded padding="9px" color="primary" size="20px">
-            <i class="fa-solid fa-gear"></i>
-            <q-popup-proxy>
-              <q-banner>
-                <template v-slot:avatar>
-                  <q-icon name="signal_wifi_off" color="primary" />
-                </template>
-                You have lost connection to the internet. This app is offline.
-              </q-banner>
-            </q-popup-proxy>
-          </q-btn>
-        </div>
       </div>
     </q-form>
   </div>

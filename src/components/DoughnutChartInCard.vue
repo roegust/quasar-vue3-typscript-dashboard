@@ -61,7 +61,7 @@ export default defineComponent({
         {
           name: props.id,
           type: 'pie',
-          radius: ['80%', '100%'],
+          radius: ['65%', '100%'],
           avoidLabelOverlap: false,
           label: {
             show: false,
