@@ -110,9 +110,11 @@ export default defineComponent({
     const name = ref([] as string[]);
     const q = useQuasar();
     const socket = io(
-      'https://smart-dev.syntecclub.com:8080/api/report/gateway/ws',
+      // 'https://smart-dev.syntecclub.com:8080/api/report/gateway/ws',
+      // 'https://localhost:8888/api/report/gateway/ws',
+      // 'https://localhost:5000/api/report/gateway/ws',
 
-      // 'https://10.10.40.173:8888/api/report/gateway/ws',
+      'https://10.10.40.173:8888/api/report/gateway/ws',
       { transports: ['polling'], path: '/api/report/gateway/ws/socket.io' },
     );
 
