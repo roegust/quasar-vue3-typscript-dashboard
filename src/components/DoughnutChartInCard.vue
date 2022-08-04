@@ -45,14 +45,14 @@ export default defineComponent({
     );
 
     const successRate = computed(() =>
-      Math.round((actual.value / target.value) * 10000) === Infinity
+      Math.round((actual.value / target.value) * 1000) === Infinity
         ? 10000
-        : Math.round((actual.value / target.value) * 10000),
+        : Math.round((actual.value / target.value) * 1000),
     );
 
     const optionEchart = ref({
       title: {
-        text: ` ${successRate.value / 100}%`,
+        text: ` ${successRate.value / 10}%`,
         textStyle: {
           fontSize: 28,
         },

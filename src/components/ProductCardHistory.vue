@@ -32,13 +32,13 @@
         <div class="col-md-3 col-sm-3 col-xs-3 self-center">
           <div class="text-h9">
             <div class="row">
-              <div class="col-12 text-bold">生產數量:</div>
-              <div class="col-12" style="font-size: 13px">
+              <div class="col-12 text-bold" style="font-size: 16px">生產數量:</div>
+              <div class="col-12" style="font-size: 16px">
                 {{ machine.processRecords.length }} /
                 {{ machine.target ?? 0 }}
               </div>
-              <div class="col-12 text-bold">標準工時:</div>
-              <div class="col-12" style="font-size: 13px">
+              <div class="col-12 text-bold" style="font-size: 16px">標準工時:</div>
+              <div class="col-12" style="font-size: 16px">
                 {{
                   `${Math.trunc(
                     machine.estimatedProcessingTime / 1000 / 60,
@@ -47,16 +47,16 @@
                   )} 秒`
                 }}
               </div>
-              <div class="col-12 text-bold">平均工時:</div>
-              <div class="col-12" style="font-size: 13px">
+              <div class="col-12 text-bold" style="font-size: 16px">平均工時:</div>
+              <div class="col-12" style="font-size: 16px">
                 {{
                   `${Math.trunc(
                     machine.avgProcessingTime / 60,
                   )} 分 ${Math.trunc(machine.avgProcessingTime % 60)} 秒`
                 }}
               </div>
-              <div class="col-12 text-bold">操作人員:</div>
-              <div class="col-12" style="font-size: 13px">
+              <div class="col-12 text-bold" style="font-size: 16px">操作人員:</div>
+              <div class="col-12" >
                 {{ machine.user ?? '未知人員' }}
               </div>
               <div></div>
