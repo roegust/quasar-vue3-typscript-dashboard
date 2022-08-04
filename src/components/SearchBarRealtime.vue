@@ -3,13 +3,8 @@
     <q-form
       @submit="
         btnConfirm({
-          name,
-          from,
-          to,
-          shiftSelected: {
-            from: shiftSelected.from,
-            to: shiftSelected.to,
-          },
+          products: name,
+          frequency: seletedFrequency,
         })
       "
     >
@@ -34,7 +29,7 @@
               :stack-label="true"
               :options="options"
               @filter="filterFn"
-              :rules="[(val) => val.length > 0 || 'Please select a product']"
+              :rules="[(val) => val.length > 0]"
             >
               <template v-slot:no-option>
                 <q-item>
@@ -66,22 +61,19 @@
               class="icon"
               padding="8px"
               color="primary"
-              label="班別"
+              :label="
+                seletedFrequency.label === undefined
+                  ? '頻率'
+                  : seletedFrequency.label
+              "
               size="13px"
               style="width: 100px"
             >
               <q-list>
-                <template
-                  v-for="shift in store.state.pageInfoModule.shifts"
-                  :key="shift.label"
-                >
-                  <q-item
-                    clickable
-                    v-close-popup
-                    @click="shiftChanged(shift.value)"
-                  >
+                <template v-for="f in frequecyList" :key="f.label">
+                  <q-item clickable v-close-popup @click="frequecyChanged(f)">
                     <q-item-section>
-                      <q-item-label>{{ shift.label }}</q-item-label>
+                      <q-item-label>{{ f.label }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </template>
@@ -95,36 +87,52 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onBeforeMount, watch } from 'vue';
+import {
+  defineComponent,
+  ref,
+  onBeforeMount,
+  onUnmounted,
+  onMounted,
+  unref,
+} from 'vue';
 import { useStore } from 'src/store';
-import moment from 'moment';
 import { useQuasar } from 'quasar';
-// import data from '../data/mockData';
-// import ExportBtn from './ExportBtn.vue';
-import ExportExcel from '../service/ExportExcel';
+import io from 'socket.io-client';
 import { ProductsInterface } from '../store/pageInfo/state';
-
-interface TimeRange {
-  from: string;
-  to: string;
-}
+import { Details, Frequency } from '../store/socket/state';
 
 export default defineComponent({
-  name: 'SearchBar',
+  name: 'SearchBarRealtime',
   props: {
     type: String,
   },
   setup() {
-    const isRawData = ref(false);
-    const q = useQuasar();
-    const today = moment().format('yyyy-MM-DD');
     const name = ref([] as string[]);
-    const date = ref(today as TimeRange | string);
-    const shiftSelected = ref({} as TimeRange);
-    const from = ref(today);
-    const to = ref(today);
+    const q = useQuasar();
+    const socket = io(
+      'https://smart-dev.syntecclub.com:8080/api/report/gateway/ws',
+
+      // 'https://10.10.40.173:8888/api/report/gateway/ws',
+      { transports: ['polling'], path: '/api/report/gateway/ws/socket.io' },
+    );
+
+    let loopTimer = setInterval(() => {
+      // eslint-disable-next-line no-console
+      console.log('Generate loop item');
+    }, 100000);
+
+    clearInterval(loopTimer);
 
     const store = useStore();
+    const frequecyList = [
+      { label: '10秒', value: 5 },
+      { label: '20秒', value: 20 },
+      { label: '30秒', value: 30 },
+      { label: '1分鐘', value: 60 },
+      { label: '5分鐘', value: 300 },
+    ] as Frequency[];
+
+    const seletedFrequency = ref({} as Frequency);
 
     name.value.push(...store.state.pageInfoModule.name);
 
@@ -152,83 +160,80 @@ export default defineComponent({
       });
     };
 
-    onBeforeMount(() => {
-      store.dispatch('pageInfoModule/collect');
+    onBeforeMount(async () => {
+      await store.dispatch('pageInfoModule/collectProductsOption');
+
+      socket.on('latest-data', (data: string) => {
+        const parsedData = JSON.parse(data) as Details[];
+        store.commit('socketModule/setRealtimeData', parsedData);
+        console.log(parsedData);
+      });
     });
 
-    watch(
-      () => store.state.pageInfoModule.shifts,
-      () => {
-        const { shifts } = store.state.pageInfoModule;
+    onUnmounted(() => {
+      clearInterval(loopTimer);
+      socket.disconnect();
+    });
 
-        if (shifts.length > 0) {
-          const shift = shifts[0];
-          shiftSelected.value = shift.value;
-        }
-      },
-    );
+    const setLoopItem = (products: string[], frequency: Frequency) => {
+      socket.emit('get-data', {
+        tenantId: 'admin',
+        productNos: products,
+      });
 
-    watch(
-      () => isRawData.value,
-      (cur) => {
-        store.commit('pageInfoModule/rawDataVisible', cur);
-      },
-    );
+      clearInterval(loopTimer);
+
+      loopTimer = setInterval(() => {
+        socket.emit('get-data', {
+          tenantId: 'admin',
+          productNos: products,
+        });
+      }, frequency.value * 1000);
+    };
+
+    onMounted(() => {
+      store.commit('socketModule/initialCards');
+      name.value = Array.from(store.state.socketModule.products);
+      seletedFrequency.value.label = store.state.socketModule.frequency.label;
+      seletedFrequency.value.value = store.state.socketModule.frequency.value;
+
+      setLoopItem(name.value, seletedFrequency.value);
+    });
 
     const btnConfirm = (payload: {
-      name: string[];
-      from: string;
-      to: string;
-      shiftSelected: TimeRange;
+      products: string[];
+      frequency: Frequency;
     }) => {
-      if (name.value.length > 0) {
-        q.loading.show({
-          message: 'Transforming data. Please wait...',
-          boxClass: 'bg-grey-2 text-grey-9',
-          spinnerColor: 'primary',
+      let chk = true;
+      if (seletedFrequency.value.label === undefined) {
+        q.notify({
+          type: 'negative',
+          message: '請選擇頻率',
         });
-        store.dispatch('productsModule/refreshData', payload).then(() => {
-          store.dispatch('pageInfoModule/submit', payload);
-          setTimeout(() => {
-            q.loading.hide();
-          }, 1000);
-        });
+
+        chk = false;
+      }
+      if (payload.products.length > 0 && chk) {
+        store.commit('socketModule/initialCards');
+        store.commit('socketModule/storedState', payload);
+
+        setLoopItem(payload.products, payload.frequency);
       }
     };
 
-    const rangeComputed = (range: TimeRange | string) => {
-      if (typeof range === 'string') {
-        from.value = range;
-        to.value = range;
-      } else {
-        from.value = range.from;
-        to.value = range.to;
-      }
-    };
-
-    const shiftChanged = (shift: TimeRange) => {
-      shiftSelected.value = shift;
-    };
-
-    const presentationChanged = (val: boolean) => {
-      store.commit('pageInfoModule/rawDataVisible', val);
+    const frequecyChanged = (f: Frequency) => {
+      seletedFrequency.value = f;
     };
 
     return {
-      isRawData,
       store,
       name,
-      date,
-      shiftSelected,
       btnConfirm,
       options,
       filterFn,
-      ExportExcel,
-      from,
-      to,
-      rangeComputed,
-      shiftChanged,
-      presentationChanged,
+      frequecyChanged,
+      frequecyList,
+      seletedFrequency,
     };
   },
 });

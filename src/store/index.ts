@@ -9,8 +9,10 @@ import {
 import createMultiTabState from 'vuex-multi-tab-state';
 import productsModule from './product';
 import pageInfoModule from './pageInfo';
+import socketModule from './socket';
 import { ProductsInterface } from './product/state';
 import { PageInfoInterface } from './pageInfo/state';
+import { SocketInterface } from './socket/state';
 
 /*
  * If not building with SSR mode, you can
@@ -27,6 +29,7 @@ export interface StateInterface {
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
   productsModule: ProductsInterface;
   pageInfoModule: PageInfoInterface;
+  socketModule: SocketInterface;
 }
 
 // provide typings for `this.$store`
@@ -45,10 +48,11 @@ export default store((/* { ssrContext } */) => {
     modules: {
       productsModule,
       pageInfoModule,
+      socketModule,
     },
     plugins: [
       createMultiTabState({
-        statesPaths: ['pageInfoModule.name'],
+        statesPaths: ['socketModule.products', 'socketModule.frequency'],
       }),
     ],
 

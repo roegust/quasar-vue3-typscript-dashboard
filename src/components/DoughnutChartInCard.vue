@@ -53,6 +53,9 @@ export default defineComponent({
     const optionEchart = ref({
       title: {
         text: ` ${successRate.value / 100}%`,
+        textStyle: {
+          fontSize: 28,
+        },
         left: 'center',
         top: 'center',
       },

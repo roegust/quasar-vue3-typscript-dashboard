@@ -4,12 +4,7 @@
       <SearchBarRealtime />
     </div>
     <div v-if="!store.state.pageInfoModule.isRawData">
-      <ProductSection :products="store.state.productsModule.products" />
-    </div>
-    <div
-      v-if="store.state.pageInfoModule.isRawData"
-    >
-      <ProductsDetail :rawData="store.state.productsModule.rawData" />
+      <ProductSection :socketItem="store.state.socketModule" type="realtime" />
     </div>
   </q-page>
 </template>
@@ -19,11 +14,10 @@ import { defineComponent } from 'vue';
 import { useStore } from 'src/store';
 import ProductSection from '../components/ProductSection.vue';
 import SearchBarRealtime from '../components/SearchBarRealtime.vue';
-import ProductsDetail from '../components/ProductsDetail.vue';
 
 export default defineComponent({
   name: 'ProductTracking',
-  components: { ProductSection, SearchBarRealtime, ProductsDetail },
+  components: { ProductSection, SearchBarRealtime },
   setup() {
     const store = useStore();
 

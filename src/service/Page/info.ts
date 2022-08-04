@@ -26,4 +26,32 @@ const info = async () => {
   return data;
 };
 
-export default info;
+const shiftsOptions = async () => {
+  const data = await api
+    .get('/ProcessingReports/Shifts')
+    .then((response) => response.data.content as ShiftsResInterface[])
+    .catch(() => {
+      Notify.create({
+        type: 'negative',
+        message: 'Error',
+      });
+      return [] as ShiftsResInterface[];
+    });
+  return data;
+};
+
+const productsOptions = async () => {
+  const data = await api
+    .get('/ProcessingReports/Products')
+    .then((response) => response.data.content as ProductsResInterface[])
+    .catch(() => {
+      Notify.create({
+        type: 'negative',
+        message: 'Error',
+      });
+      return [] as ProductsResInterface[];
+    });
+  return data;
+};
+
+export { info, shiftsOptions, productsOptions };

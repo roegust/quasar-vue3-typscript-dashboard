@@ -1,9 +1,8 @@
 <template>
-  <div class="form ">
+  <div class="form">
     <q-form
       @submit="
         btnConfirm({
-          
           name,
           from,
           to,
@@ -16,9 +15,7 @@
       "
     >
       <div class="row">
-
         <div class="row justify-between col-md-7">
-          
           <div class="col-md-5">
             <q-select
               filled
@@ -42,7 +39,9 @@
             >
               <template v-slot:no-option>
                 <q-item>
-                  <q-item-section class="text-grey"> 找不到結果 </q-item-section>
+                  <q-item-section class="text-grey">
+                    找不到結果
+                  </q-item-section>
                 </q-item>
               </template>
             </q-select>
@@ -56,48 +55,53 @@
               v-model="from"
               label="開始時間"
               :stack-label="true"
-              :rules="[(val) => (val && val.length > 0) || 'Please select a day']"
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please select a day',
+              ]"
             />
           </div>
 
           <div class="col-md-3">
-          <q-input
-            filled
-            bg-color="white"
-            :readonly="true"
-            v-model="to"
-            label="結束時間"
-            :stack-label="true"
-          >
-            <template v-slot:append>
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy
-                  cover
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-date
-                    v-model="date"
-                    mask="YYYY-MM-DD"
-                    range
-                    color="primary"
-                    @range-end="rangeComputed(date)"
+            <q-input
+              filled
+              bg-color="white"
+              :readonly="true"
+              v-model="to"
+              label="結束時間"
+              :stack-label="true"
+            >
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
                   >
-                    <div class="items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+                    <q-date
+                      v-model="date"
+                      mask="YYYY-MM-DD"
+                      range
+                      color="primary"
+                      @range-end="rangeComputed(date)"
+                    >
+                      <div class="items-center justify-end">
+                        <q-btn
+                          v-close-popup
+                          label="Close"
+                          color="primary"
+                          flat
+                        />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
         </div>
 
-
-        </div>
-        
-        <div class="row col-md-5 justify-between ">
-          <div class="col-md-3 q-pa-md ">
+        <div class="row col-md-5 justify-between">
+          <div class="col-md-3 q-pa-md">
             <q-btn
               unelevated
               rounded
@@ -158,7 +162,11 @@
               padding="8px"
               color="primary"
               :label="
-                isRawData === null ? '顯示' : isRawData === true ? '表單' : '圖表'
+                isRawData === null
+                  ? '顯示'
+                  : isRawData === true
+                  ? '表單'
+                  : '圖表'
               "
               style="width: 100px"
             >
@@ -199,8 +207,6 @@
             </q-btn>
           </div> -->
         </div>
-
-
       </div>
     </q-form>
   </div>
@@ -238,8 +244,6 @@ export default defineComponent({
 
     const store = useStore();
 
-    name.value.push(...store.state.pageInfoModule.name);
-
     const options = ref([] as ProductsInterface[]);
 
     const filterFn = (
@@ -264,21 +268,10 @@ export default defineComponent({
       });
     };
 
-    onBeforeMount(() => {
-      store.dispatch('pageInfoModule/collect');
+    onBeforeMount(async () => {
+      await store.dispatch('pageInfoModule/collectProductsOption');
+      await store.dispatch('pageInfoModule/collectShiftsOption');
     });
-
-    // watch(
-    //   () => store.state.pageInfoModule.shifts,
-    //   () => {
-    //     const { shifts } = store.state.pageInfoModule;
-
-    //     if (shifts.length > 0) {
-    //       const shift = shifts[0];
-    //       shiftSelected.value = shift.value;
-    //     }
-    //   },
-    // );
 
     watch(
       () => isRawData.value,
@@ -314,7 +307,7 @@ export default defineComponent({
         chk = false;
       }
 
-      if (name.value.length > 0 && chk) {
+      if (payload.name.length > 0 && chk) {
         q.loading.show({
           message: 'Transforming data. Please wait...',
           boxClass: 'bg-grey-2 text-grey-9',
