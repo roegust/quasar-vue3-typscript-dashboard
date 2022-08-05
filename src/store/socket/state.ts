@@ -25,7 +25,10 @@ export interface SocketInterface {
 function state(): SocketInterface {
   return {
     products: [],
-    frequency: 0,
+    frequency: {
+      label: '',
+      value: 0,
+    },
     cards: new Map(),
   };
 }
