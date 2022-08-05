@@ -46,7 +46,7 @@ export default defineComponent({
 
     const successRate = computed(() =>
       Math.round((actual.value / target.value) * 1000) === Infinity
-        ? 10000
+        ? 1000
         : Math.round((actual.value / target.value) * 1000),
     );
 
