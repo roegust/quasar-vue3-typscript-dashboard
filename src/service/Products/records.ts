@@ -9,13 +9,25 @@ interface ProductsResponse {
   };
 }
 
+// interface ProductsRequest {
+//   start: string;
+//   end: string;
+//   from: string;
+//   to: string;
+//   productNos: string[];
+// }
+
 const records = async (
   payload: PageInfoInterface,
 ): Promise<ProductsResponse> => {
-  const data = await api
-    .get(
-      `/ProcessingReports?start=${payload.from}&end=${payload.to}&from=${payload.shiftSelected.from}&to=${payload.shiftSelected.to}&productName=${payload.name}`,
-    )
+  const data = await api // .post('/ProcessingReports', {});
+    .post('/ProcessingReports', {
+      start: payload.from,
+      end: payload.to,
+      from: payload.shiftSelected.from,
+      to: payload.shiftSelected.to,
+      productNos: payload.name,
+    })
     .then((response) => response.data as ProductsResponse)
     .catch(() => {
       Notify.create({

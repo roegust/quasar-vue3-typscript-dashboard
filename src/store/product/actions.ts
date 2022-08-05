@@ -26,6 +26,9 @@ const actions: ActionTree<ProductsInterface, StateInterface> = {
       filteredData = res.content.products;
     });
 
+    // filteredData.forEach(item => {
+    //   item.machines.push(...Array.from(item.machines))
+    // })
     // console.log(filteredData);
 
     const destructedArr = [] as ProductProcessRecord[];

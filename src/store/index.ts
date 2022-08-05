@@ -6,10 +6,13 @@ import {
   useStore as vuexUseStore,
 } from 'vuex';
 
+import createMultiTabState from 'vuex-multi-tab-state';
 import productsModule from './product';
 import pageInfoModule from './pageInfo';
+import socketModule from './socket';
 import { ProductsInterface } from './product/state';
 import { PageInfoInterface } from './pageInfo/state';
+import { SocketInterface } from './socket/state';
 
 /*
  * If not building with SSR mode, you can
@@ -26,6 +29,7 @@ export interface StateInterface {
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
   productsModule: ProductsInterface;
   pageInfoModule: PageInfoInterface;
+  socketModule: SocketInterface;
 }
 
 // provide typings for `this.$store`
@@ -42,10 +46,15 @@ export const storeKey: InjectionKey<VuexStore<StateInterface>> =
 export default store((/* { ssrContext } */) => {
   const Store = createStore<StateInterface>({
     modules: {
-      // example
       productsModule,
       pageInfoModule,
+      socketModule,
     },
+    plugins: [
+      createMultiTabState({
+        statesPaths: ['socketModule.products', 'socketModule.frequency'],
+      }),
+    ],
 
     // enable strict mode (adds overhead!)
     // for dev mode and --debug builds only

@@ -2,6 +2,10 @@
 
 A Quasar Project
 
+# Prepare cli
+
+npm install -g @quasar/cli
+
 ## Install the dependencies
 ```bash
 yarn

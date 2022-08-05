@@ -1,34 +1,58 @@
+<style lang="scss" scoped></style>
+
 <template>
-  <div
-    class="q-pa-md"
-    style="width: 100%"
-    v-for="product in products"
-    :key="product.name + product.carft"
-  >
-    <div class="row q-pa-md">
-      <q-card style="background: #00695c" class="text-white text-bold">
-        <q-card-section>
-          {{ product.name ?? 'Unknown Product' }}
-          {{ product.carft ? `(${product.carft})` : '' }}
-        </q-card-section>
-      </q-card>
+  <div v-if="$props.type === 'history'">
+    <div
+      class=""
+      style="width: 100%"
+      v-for="product in products"
+      :key="product.id + product.carft"
+    >
+      <p class="row" style="font-size: large">
+        {{ `${product.id} / ${product.name}` ?? 'Unknown Product' }} -
+        {{ product.carft ? `(${product.carft})` : '' }}
+      </p>
+      <hr />
+
+      <div class="row">
+        <ProductCardHistory :machines="product.machines" />
+      </div>
     </div>
-    <div class="row">
-      <ProductCard :machines="product.machines" />
+  </div>
+
+  <div v-if="$props.type === 'realtime'">
+    <div
+      class=""
+      style="width: 100%"
+      v-for="[productID, value] in socketItem?.cards"
+      :key="productID"
+    >
+      <p class="row" style="font-size: large">
+        {{ productID ?? 'Unknown Product' }}
+      </p>
+      <hr />
+
+      <div class="row">
+        <ProductCardRealtime :machines="value" />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ProductCard from './ProductCard.vue';
+import ProductCardHistory from './ProductCardHistory.vue';
+import ProductCardRealtime from './ProductCardRealtime.vue';
 import { ProductInterface } from '../store/product/state';
+import { SocketInterface } from '../store/socket/state';
 
 export default defineComponent({
   name: 'ProductSection',
-  components: { ProductCard },
+  components: { ProductCardHistory, ProductCardRealtime },
   props: {
     products: Object as () => ProductInterface[],
+    socketItem: Object as () => SocketInterface,
+    type: String,
   },
   setup() {
     // const testArr = [...Array(Math.floor(Math.random() * 10)).keys()];

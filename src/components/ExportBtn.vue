@@ -1,6 +1,12 @@
 <template>
-  <q-btn label="匯出" size="md" color="teal-9" v-on:click="ExportExcel(data)">
-    <q-icon center name="fa-solid fa-file-arrow-down" />
+  <q-btn 
+  disable="false"
+    padding="8px"
+    unelevated rounded 
+    label="匯出" 
+    size="13px" 
+    style="width: 100px" color="primary" v-on:click="ExportExcel(data)">
+    <q-icon center name="download" />
   </q-btn>
 </template>
 
@@ -18,3 +24,4 @@ export default defineComponent({
   },
 });
 </script>
+
