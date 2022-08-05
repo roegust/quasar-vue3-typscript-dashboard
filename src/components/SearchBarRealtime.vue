@@ -62,9 +62,7 @@
               padding="8px"
               color="primary"
               :label="
-                seletedFrequency.label === undefined
-                  ? '頻率'
-                  : seletedFrequency.label
+                seletedFrequency.label === '' ? '頻率' : seletedFrequency.label
               "
               size="13px"
               style="width: 100px"
@@ -93,7 +91,6 @@ import {
   onBeforeMount,
   onUnmounted,
   onMounted,
-  unref,
 } from 'vue';
 import { useStore } from 'src/store';
 import { useQuasar } from 'quasar';
@@ -111,10 +108,10 @@ export default defineComponent({
     const q = useQuasar();
     const socket = io(
       // 'https://smart-dev.syntecclub.com:8080/api/report/gateway/ws',
-      'https://localhost:8888/api/report/gateway/ws',
+      // 'https://localhost:8888/api/report/gateway/ws',
       // 'https://localhost:5000/api/report/gateway/ws',
 
-      // 'https://10.10.40.173:8888/api/report/gateway/ws',
+      'https://10.10.40.173:8888/api/report/gateway/ws',
       { transports: ['polling'], path: '/api/report/gateway/ws/socket.io' },
     );
 
@@ -127,7 +124,7 @@ export default defineComponent({
 
     const store = useStore();
     const frequecyList = [
-      { label: '10秒', value: 5 },
+      { label: '10秒', value: 10 },
       { label: '20秒', value: 20 },
       { label: '30秒', value: 30 },
       { label: '1分鐘', value: 60 },
@@ -168,7 +165,6 @@ export default defineComponent({
       socket.on('latest-data', (data: string) => {
         const parsedData = JSON.parse(data) as Details[];
         store.commit('socketModule/setRealtimeData', parsedData);
-        console.log(parsedData);
       });
     });
 
@@ -198,8 +194,8 @@ export default defineComponent({
       name.value = Array.from(store.state.socketModule.products);
       seletedFrequency.value.label = store.state.socketModule.frequency.label;
       seletedFrequency.value.value = store.state.socketModule.frequency.value;
-
-      setLoopItem(name.value, seletedFrequency.value);
+      if (name.value.length > 0 && seletedFrequency.value.value !== 0)
+        setLoopItem(name.value, seletedFrequency.value);
     });
 
     const btnConfirm = (payload: {
@@ -207,7 +203,7 @@ export default defineComponent({
       frequency: Frequency;
     }) => {
       let chk = true;
-      if (seletedFrequency.value.label === undefined) {
+      if (seletedFrequency.value.label === '') {
         q.notify({
           type: 'negative',
           message: '請選擇頻率',
