@@ -16,8 +16,9 @@ declare module '@vue/runtime-core' {
 // api server 8888
 // const api = axios.create({ baseURL: 'https://localhost:8888/api/report/' });
 // const api = axios.create({ baseURL: 'https://localhost:5001/api/report/' });
+const api = axios.create({ baseURL: 'http://localhost:5000/api/report/' });
 // const api = axios.create({ baseURL: 'https://smart-dev.syntecclub.com:8080/api/report/' });
-const api = axios.create({ baseURL: 'https://10.10.40.173:8888/api/report/' });
+// const api = axios.create({ baseURL: 'https://10.10.40.173:8888/api/report/' });
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
