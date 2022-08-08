@@ -1,5 +1,5 @@
+# Frontend Compiler
 FROM node:lts-alpine as builder
-MAINTAINER George
 
 RUN npm install -g @quasar/cli
 
@@ -13,7 +13,9 @@ COPY . /leantec-web-vue/
 
 RUN quasar build
 
+# Copy files in spa to nginx and build image
 FROM nginx:latest
+MAINTAINER George
 
 WORKDIR /leantec-web-vue
 
